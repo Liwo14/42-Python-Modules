@@ -6,9 +6,14 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/20 12:46:14 by ccolnat         #+#    #+#               #
-#  Updated: 2026/04/20 13:04:42 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/04/20 13:32:05 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 def ft_garden_name():
-    
+    garden_name = input("Enter garden name: ")
+    print("Garden name: " + garden_name)
+    print("Status: Growing well!")
+
+
+ft_garden_name()

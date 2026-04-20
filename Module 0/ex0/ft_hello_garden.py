@@ -6,9 +6,10 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/20 12:46:18 by ccolnat         #+#    #+#               #
-#  Updated: 2026/04/20 12:47:15 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/04/20 13:12:52 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
+
 def ft_hello_garden():
     print("Hello, Garden Community!")
 
