@@ -6,7 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/22 07:57:57 by ccolnat         #+#    #+#               #
-#  Updated: 2026/04/22 11:18:33 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/04/22 13:59:15 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -17,4 +17,4 @@ def ft_harvest_total():
         harvest = input(f"Day {i} harvest: ")
         total = int(harvest) + total
         i += 1
-    print("Total harvest: ", total)
+    print("Total harvest:", total)
