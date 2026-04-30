@@ -5,10 +5,12 @@
 #                                                  +:+ +:+         +:+      #
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
-#  Created: 2026/04/29 10:03:58 by ccolnat         #+#    #+#               #
-#  Updated: 2026/04/29 11:51:45 by ccolnat         ###   ########.fr        #
+#  Created: 2026/04/30 08:43:34 by ccolnat         #+#    #+#               #
+#  Updated: 2026/04/30 14:52:56 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
+
+import random
 
 R = '\033[31m'
 Y = '\033[33m'
@@ -17,188 +19,183 @@ B = '\033[34m'
 RESET = '\033[0m'
 
 
+def soil_type_database(nb: int) -> str:
+    pass
+
+
+def vegetable_database(nb: int) -> str:
+    if sariety == 1:
+        name = "Carrot      "
+        max_size = 25
+        max_age = 75
+        daily_growth = self.max_size / self.max_age
+        cold_resistance =
+        heat_resistance =
+        moisture =
+        soil_type =
+        size = 0
+        age = 0
+    elif variety == 2:
+        name = "Flax        "
+        max_size = 80
+        max_age = 95
+        daily_growth = self.max_size / self.max_age
+        size = 0
+        age = 0
+    elif variety == 3:
+        name = "Onion       "
+        max_size = 40
+        max_age = 10
+        daily_growth = self.max_size / self.max_age
+        size = 0
+        age = 0
+    elif variety == 4:
+        name = "Spelt       "
+        max_size = 110
+        max_age = 135
+        daily_growth = self.max_size / self.max_age
+        size = 0
+        age = 0
+    elif variety == 5:
+        name = "Turnip      "
+        max_size = 35
+        max_age = 55
+        daily_growth = self.max_size / self.max_age
+        size = 0
+        age = 0
+    elif variety == 6:
+        name = "Parsnip     "
+        max_size = 50
+        max_age = 110
+        daily_growth = self.max_size / self.max_age
+        size = 0
+        age = 0
+    elif variety == 7:
+        name = "Rice        "
+        max_size = 110
+        max_age = 130
+        daily_growth = self.max_size / self.max_age
+        size = 0
+        age = 0
+    elif variety == 8:
+        name = "Rye         "
+        max_size = 135
+        max_age = 140
+        daily_growth = self.max_size / self.max_age
+        size = 0
+        age = 0
+    elif.variety == 9:
+        name = "Soybean     "
+        max_size = 80
+        max_age = 100
+        daily_growth = self.max_size / self.max_age
+        size = 0
+        age = 0
+    elif.variety == 10:
+        name = "Amaranth    "
+        max_size = 125
+        max_age = 100
+        daily_growth = self.max_size / self.max_age
+        size = 0
+        age = 0
+    elif.variety == 11:
+        name = "Bell Pepper "
+        max_size = 75
+        max_age = 80
+        daily_growth = self.max_size / self.max_age
+        size = 0
+        age = 0
+    elif.variety == 12:
+        name = "Cassava     "
+        max_size = 225
+        max_age = 270
+        daily_growth = self.max_size / self.max_age
+        size = 0
+        age = 0
+    elif.variety == 13:
+        name = "Peanut      "
+        max_size = 40
+        max_age = 135
+        daily_growth = self.max_size / self.max_age
+        size = 0
+        age = 0
+    elif.variety == 14:
+        name = "Pineapple   "
+        max_size = 105
+        max_age = 450
+        daily_growth = self.max_size / self.max_age
+        size = 0
+        age = 0
+    elif.variety == 15:
+        name = "Sunflower   "
+        max_size = 225
+        max_age = 100
+        daily_growth = self.max_size / self.max_age
+        size = 0
+        age = 0
+    elif.variety == 16:
+        name = "Pumpkin     "
+        max_size = 45
+        max_age = 105
+        daily_growth = self.max_size / self.max_age
+        size = 0
+        age = 0
+    elif.variety == 17:
+        name = "Cabbage     "
+        max_size = 50
+        max_age = 90
+        daily_growth = self.max_size / self.max_age
+        size = 0
+        age = 0
+    elif.variety == 18:
+        .name = "Dragon Fruit"
+        .max_size = 200
+        .max_age = 240
+        .daily_growth = self.max_size / self.max_age
+        .size = 0
+        .age = 0
+    pass
+
+
 class Plant:
     """
     This is the blueprint for a Plant
     """
-    def __init__(self, variety: int, soil_type: int, category: int):
-        """
-        - First Arg ***variety*** is type (int) from 1 to 17 for the variety of plant.
-            * If outside of range will default on 18 (dragon fruit)
-        - Second arg ***soil_type*** is type (int) from 1 to 3.
-            * If outside of range will default on 2 (Medium Fertility)
-        - Third arg ***category*** is type (int)  (vegetable, tree, flower...)
-        """
-        if variety < 1 or variety > 17:
-            self.variety = 18
-            """
-            Number between 1 and 18, determine the plant type.
-            """
-        else:
-            self.variety = variety
+    def __init__(
+                self,
+                soil_type: int
+                ) -> None:
 
-        if soil_type < 1 or soil_type > 3:
-            self.soil_type = 2
-            """
-            1 = Low fertility (80% growth)
-            2 = Medium fertility (100% growth)
-            3 = Hight fertility (120% growth)
-            """
-        else:
-            self.soil_type = soil_type
+        self.soil_type: str = soil_type_database(soil_type)
+        self.size: int = 0
+        self.age: int = 0
+        self.alive: bool = True
+        self.stuned: bool = False
+        self.moisture: float = 0.75
 
-        if category < 1 or category > 3:
-            self.category = 1
 
-        class Vegetable:
-            """
-            bal
-            """
-            def __init__(self, variety: int, soil_type: int):
-                 """
-                 bla
-                 """
-                
-                if self.variety == 1:
-                    self.name = "Carrot      "
-                    self.max_size = 25
-                    self.max_age = 75
-                    self.daily_growth = self.max_size / self.max_age
-                    self.cold_resistance =
-                    self.heat_resistance =
-                    self.moisture =
-                    self.soil_type =
-                    self.size = 0
-                    self.age = 0
-                elif self.variety == 2:
-                    self.name = "Flax        "
-                    self.max_size = 80
-                    self.max_age = 95
-                    self.daily_growth = self.max_size / self.max_age
-                    self.size = 0
-                    self.age = 0
-                elif self.variety == 3:
-                    self.name = "Onion       "
-                    self.max_size = 40
-                    self.max_age = 10
-                    self.daily_growth = self.max_size / self.max_age
-                    self.size = 0
-                    self.age = 0
-                elif self.variety == 4:
-                    self.name = "Spelt       "
-                    self.max_size = 110
-                    self.max_age = 135
-                    self.daily_growth = self.max_size / self.max_age
-                    self.size = 0
-                    self.age = 0
-                elif self.variety == 5:
-                    self.name = "Turnip      "
-                    self.max_size = 35
-                    self.max_age = 55
-                    self.daily_growth = self.max_size / self.max_age
-                    self.size = 0
-                    self.age = 0
-                elif self.variety == 6:
-                    self.name = "Parsnip     "
-                    self.max_size = 50
-                    self.max_age = 110
-                    self.daily_growth = self.max_size / self.max_age
-                    self.size = 0
-                    self.age = 0
-                elif self.variety == 7:
-                    self.name = "Rice        "
-                    self.max_size = 110
-                    self.max_age = 130
-                    self.daily_growth = self.max_size / self.max_age
-                    self.size = 0
-                    self.age = 0
-                elif self.variety == 8:
-                    self.name = "Rye         "
-                    self.max_size = 135
-                    self.max_age = 140
-                    self.daily_growth = self.max_size / self.max_age
-                    self.size = 0
-                    self.age = 0
-                elif self.variety == 9:
-                    self.name = "Soybean     "
-                    self.max_size = 80
-                    self.max_age = 100
-                    self.daily_growth = self.max_size / self.max_age
-                    self.size = 0
-                    self.age = 0
-                elif self.variety == 10:
-                    self.name = "Amaranth    "
-                    self.max_size = 125
-                    self.max_age = 100
-                    self.daily_growth = self.max_size / self.max_age
-                    self.size = 0
-                    self.age = 0
-                elif self.variety == 11:
-                    self.name = "Bell Pepper "
-                    self.max_size = 75
-                    self.max_age = 80
-                    self.daily_growth = self.max_size / self.max_age
-                    self.size = 0
-                    self.age = 0
-                elif self.variety == 12:
-                    self.name = "Cassava     "
-                    self.max_size = 225
-                    self.max_age = 270
-                    self.daily_growth = self.max_size / self.max_age
-                    self.size = 0
-                    self.age = 0
-                elif self.variety == 13:
-                    self.name = "Peanut      "
-                    self.max_size = 40
-                    self.max_age = 135
-                    self.daily_growth = self.max_size / self.max_age
-                    self.size = 0
-                    self.age = 0
-                elif self.variety == 14:
-                    self.name = "Pineapple   "
-                    self.max_size = 105
-                    self.max_age = 450
-                    self.daily_growth = self.max_size / self.max_age
-                    self.size = 0
-                    self.age = 0
-                elif self.variety == 15:
-                    self.name = "Sunflower   "
-                    self.max_size = 225
-                    self.max_age = 100
-                    self.daily_growth = self.max_size / self.max_age
-                    self.size = 0
-                    self.age = 0
-                elif self.variety == 16:
-                    self.name = "Pumpkin     "
-                    self.max_size = 45
-                    self.max_age = 105
-                    self.daily_growth = self.max_size / self.max_age
-                    self.size = 0
-                    self.age = 0
-                elif self.variety == 17:
-                    self.name = "Cabbage     "
-                    self.max_size = 50
-                    self.max_age = 90
-                    self.daily_growth = self.max_size / self.max_age
-                    self.size = 0
-                    self.age = 0
-                elif self.variety == 18:
-                    self.name = "Dragon Fruit"
-                    self.max_size = 200
-                    self.max_age = 240
-                    self.daily_growth = self.max_size / self.max_age
-                    self.size = 0
-                    self.age = 0
+class Vegetable(Plant):
+    """
+    This is the blueprint for a vegetable
+    """
+    def __init__(
+                self,
+                soil_type: int,
+                variety: int
+                ) -> None:
 
-    def growth(self, temperature: float):
-        """ 
-        
-        """
+        Plant.__init__(soil_type)
+        self.name: str
+        self.ripen_day: str
+        self.growth_base_speed: float
+        self.heat_resistance: int
+        self.cold_resistance: int
 
-    def show(self):
-        """
-        Method to shows the attributes of the plant
-        """
-        print(f"| Name : {self.name} | {self.age} days | {self.size}cm |")
-        print("|---------------------+----------+-------|")
+        (
+            self.ripen_day,
+            self.growth_base_speed,
+            self.name,
+            self.heat_resistance,
+            self.cold_resistance
+        ) = vegetable_database(variety)
         
