@@ -6,7 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/24 08:56:08 by ccolnat         #+#    #+#               #
-#  Updated: 2026/04/29 10:04:30 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/04 09:26:58 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -102,7 +102,7 @@ class Plant:
 
     def show(self):
         """
-        Method to shows the attributes of the plant
+        Method to show the attributes of the plant
         """
         print(f"| Name : {self.name} | {self.age} days | {self.size}cm |")
         print("|---------------------+----------+-------|")
