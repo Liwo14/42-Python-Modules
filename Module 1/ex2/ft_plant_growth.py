@@ -6,7 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/30 08:43:34 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/04 12:15:49 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/04 12:59:30 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -155,13 +155,14 @@ class Vegetable(Plant):
         """
 
         (
-            self.mature_size,
             self.name,
+            self.mature_size,
             self.base_growth,
             self.cold_res,
             self.heat_res
         ) = vegetable_database(variety)
         print(f"{self.name} was created succesfully ! ")
+
         if soil_type == "low fertility soil   ":
             self.base_growth = self.base_growth * 0.8
         elif soil_type == "high fertility soil  ":
@@ -194,12 +195,7 @@ class Vegetable(Plant):
             print("Hotter that the sun, kinda too much for plants isn´t it ?")
             return
 
-        if temp < -273.15:            print(f"{R} Is DEAD :c {RESET}")
-
-    def grow(self):
-        if self.size < self.mature_size:
-            self.size += self.growth_speed
-            if self.size > self.mature_size:
+        if temp < -273.15:
             print("Colder than the laws of physics, damn")
             return
 
