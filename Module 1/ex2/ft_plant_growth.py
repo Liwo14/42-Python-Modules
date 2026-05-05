@@ -6,7 +6,7 @@
 #  By: root <root@student.42.fr>                 +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/30 08:43:34 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/05 22:45:05 by root            ###   ########.fr        #
+#  Updated: 2026/05/05 22:47:31 by root            ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -246,6 +246,8 @@ class Vegetable(Plant):
         print(f"Moisture level : {self.moisture}%")
         print(f"Base growth speed : {self.base_growth:.2f}cm per day")
         print(f"Current growth speed : {self.growth_speed:.2f}cm per day")
+        print(f"Cold res down to: {self.cold_res}°C")
+        print(f"Heat res up to: {self.heat_res}°C")
 
 
     def grow(self):
