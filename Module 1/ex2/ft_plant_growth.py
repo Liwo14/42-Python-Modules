@@ -6,7 +6,7 @@
 #  By: root <root@student.42.fr>                 +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/30 08:43:34 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/05 22:47:31 by root            ###   ########.fr        #
+#  Updated: 2026/05/06 00:07:59 by root            ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -48,39 +48,39 @@ def vegetable_database(variety: int) -> tuple[str, float, float, int, int]:
     *If input is outside range, will default on Dragon fruit.*
     """
     if variety == 1:
-        return "Carrot      ", 25, 0.33, -10, 22
+        return "Carrot", 25, 0.33, -10, 22
     elif variety == 2:
-        return "Flax        ", 80, 0.84, -5, 30
+        return "Flax", 80, 0.84, -5, 30
     elif variety == 3:
-        return "Onion       ", 40, 0.38, -1, 30
+        return "Onion", 40, 0.38, -1, 30
     elif variety == 4:
-        return "Spelt       ", 11, 0.80, -5, 30
+        return "Spelt", 11, 0.80, -5, 30
     elif variety == 5:
-        return "Turnip      ", 35, 0.64, -5, 17
+        return "Turnip", 35, 0.64, -5, 17
     elif variety == 6:
-        return "Parsnip     ", 50, 0.45, -10,  22
+        return "Parsnip", 50, 0.45, -10,  22
     elif variety == 7:
-        return "Rice        ", 11, 0.80, 8, 36
+        return "Rice", 11, 0.80, 8, 36
     elif variety == 8:
-        return "Rye         ", 13, 0.90, -12, 17
+        return "Rye", 13, 0.90, -12, 17
     elif variety == 9:
-        return "Soybean     ", 80, 0.80, -5, 30
+        return "Soybean", 80, 0.80, -5, 30
     elif variety == 10:
-        return "Amaranth    ", 12, 1.20, 6, 32
+        return "Amaranth", 12, 1.20, 6, 32
     elif variety == 11:
-        return "Bell Pepper ", 75, 0.94, 8, 24
+        return "Bell Pepper", 75, 0.94, 8, 24
     elif variety == 12:
-        return "Cassava     ", 22, 0.80, 4, 34
+        return "Cassava", 22, 0.80, 4, 34
     elif variety == 13:
-        return "Peanut      ", 40, 0.30, 10, 32
+        return "Peanut", 40, 0.30, 10, 32
     elif variety == 14:
-        return "Pineapple   ", 10, 0.20, 6, 38
+        return "Pineapple", 10, 0.20, 6, 38
     elif variety == 15:
-        return "Sunflower   ", 22, 2.20, -5, 30
+        return "Sunflower", 22, 2.20, -5, 30
     elif variety == 16:
-        return "Pumpkin     ", 45, 0.43, -5, 30
+        return "Pumpkin", 45, 0.43, -5, 30
     elif variety == 17:
-        return "Cabbage     ", 50, 0.55, -5, 25
+        return "Cabbage", 50, 0.55, -5, 25
     else:
         return "Dragon Fruit", 20, 0.80, 0, 28
 
@@ -102,10 +102,6 @@ class Plant:
         self.growth_speed: float = 0
         self.temp: float = 20
         self.old_temp: float = 20
-
-    def age(self):
-        if self.alive:
-            self.plant_age += 1
 
     def raining(self, rain: bool):
         if rain:
@@ -175,12 +171,17 @@ class Vegetable(Plant):
             self.cold_res,
             self.heat_res
         ) = vegetable_database(variety)
-        print(f"{Y}{self.name} was created succesfully ! {RESET}")
+        print(f"{Y}{self.name:12} was created succesfully ! {RESET}")
 
         if self.soil_type == "low fertility soil   ":
             self.base_growth = self.base_growth * 0.8
         elif self.soil_type == "high fertility soil  ":
             self.base_growth = self.base_growth * 1.2
+
+
+    def age(self):
+        if self.alive and self.size != self.mature_size:
+            self.plant_age += 1
 
 
     def show(self):
@@ -193,13 +194,13 @@ class Vegetable(Plant):
             return
         else:
             print(" _______________________________")
-            print(f"|Day: {self.plant_age:2} | {self.name} is {G}Alive{RESET}|")
+            print(f"|Day: {self.plant_age:2} | {self.name:12} is {G}Alive{RESET}|")
 
         print("|_______________________________|_____________________________________________")
         if self.growth_speed >= self.base_growth:
-            print(f"|Size: {self.size:.2f} cm | Growth: {G}{self.growth_speed:.2f}{RESET} cm/day |",end= " ")
+            print(f"|Size: {self.size:6.2f} cm | Growth: {G}{self.growth_speed:.2f}{RESET} cm/day |",end= " ")
         else:
-            print(f"|Size: {self.size:.2f} cm | Growth: {R}{self.growth_speed:.2f}{RESET} cm/day |",end= " ")
+            print(f"|Size: {self.size:6.2f} cm | Growth: {R}{self.growth_speed:.2f}{RESET} cm/day |",end= " ")
 
         if self.old_temp < self.temp:
             print(f"Temp is: {Y}⬈ ",end="")
@@ -207,16 +208,16 @@ class Vegetable(Plant):
             print(f"Temp is: ⭢ ",end="")
         elif self.old_temp > self.temp:
             print(f"Temp is: {B}⬊ ",end="")
-        print(f"{self.temp}{RESET}°C |",end=" ")
+        print(f"{self.temp:2}{RESET}°C |",end=" ")
 
         if 0 <= self.moisture < 25:
-            print(f"Humidity: {R}{self.moisture:3}{RESET}%      |")
+            print(f"Humidity: {R}{self.moisture:3}{RESET}%     |")
         elif 25 <= self.moisture < 50:
-            print(f"Humidity: {Y}{self.moisture:3}{RESET}%      |")
+            print(f"Humidity: {Y}{self.moisture:3}{RESET}%     |")
         elif 50 <= self.moisture < 75:
-            print(f"Humidity: {B}{self.moisture:3}{RESET}%      |")
+            print(f"Humidity: {B}{self.moisture:3}{RESET}%     |")
         elif 75 <= self.moisture <= 100:
-            print(f"Humidity: {G}{self.moisture:3}{RESET}%      |")
+            print(f"Humidity: {G}{self.moisture:3}{RESET}%     |")
         print("|_____________________________________________________________________________|")
 
 
@@ -226,9 +227,8 @@ class Vegetable(Plant):
         """
         print("_____________________________________________________________________________")
         if not self.alive:
-            print(f"{R}{self.name} is DEAD :c {RESET}")
-            print(f"Final size is {self.size}")
-
+            print(f"{self.name} {R}died{RESET} on day {self.plant_age} at {R}{(self.size / self.mature_size * 100):.2f}{RESET} % maturity ({self.size:.2f} cm)")
+            return
         print(f"State : {G}Alive{RESET}")
         print(f"Variety : {B}{self.name}{RESET}")
 
@@ -240,10 +240,11 @@ class Vegetable(Plant):
             print(f"Planted in : {B}{self.soil_type}{RESET}")
         print(f"Age : {self.plant_age} days")
         print(f"Size : {self.size:.2f} cm")
-        print(f"Maturity : {self.size / self.mature_size * 100} %")
+        if self.size == self.mature_size:
+            print(f"Maturity : {G}{(self.size / self.mature_size * 100):.2f}{RESET} %")
+        else:
+            print(f"Maturity : {Y}{(self.size / self.mature_size * 100):.2f}{RESET} %")
 
-        print(f"Temperature : {self.temp}°C")
-        print(f"Moisture level : {self.moisture}%")
         print(f"Base growth speed : {self.base_growth:.2f}cm per day")
         print(f"Current growth speed : {self.growth_speed:.2f}cm per day")
         print(f"Cold res down to: {self.cold_res}°C")
@@ -306,7 +307,7 @@ class Vegetable(Plant):
             if self.temp - self.heat_res >= 10:
                 self.alive = False
                 self.growth_speed = 0
-                print(f"{R}{self.name} has grown {self.size} cm and died from the heat after {self.plant_age} days{RESET}")
+                print(f"{R}{self.name} has grown {self.size:.2f} cm and died from the heat after {self.plant_age} days{RESET}")
                 return
             else:
                 self.growth_speed *= (1 - ((self.temp - self.heat_res) / 10))
@@ -314,7 +315,7 @@ class Vegetable(Plant):
         if self.temp < self.cold_res:
             self.alive = False
             self.growth_speed = 0
-            print(f"{R}{self.name} has grown {self.size} cm and died from the cold after {self.plant_age} days{RESET}")
+            print(f"{R}{self.name} has grown {self.size:.2f} cm and died from the cold after {self.plant_age} days{RESET}")
             return
         if self.temp < 0:
             self.growth_speed = 0
@@ -349,7 +350,7 @@ if __name__ == "__main__":
     Vegetable.show_detailed(plant_4)
 
     i: int = 0
-    while(i < 45):
+    while(i < 90):
         temp += random.randint(-2, 2)
         is_raining = random.randint(0, 4)
     
