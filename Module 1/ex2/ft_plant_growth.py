@@ -6,7 +6,7 @@
 #  By: root <root@student.42.fr>                 +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/30 08:43:34 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/05 22:35:51 by root            ###   ########.fr        #
+#  Updated: 2026/05/05 22:45:05 by root            ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -109,11 +109,11 @@ class Plant:
 
     def raining(self, rain: bool):
         if rain:
-            self.moisture += 25
+            self.moisture += 42
             if self.moisture > 100:
                 self.moisture = 100
         elif not rain:
-            self.moisture -= 10
+            self.moisture -= 8
             if self.moisture < 0:
                 self.moisture = 0
 
@@ -292,13 +292,13 @@ class Vegetable(Plant):
         self.growth_speed = self.base_growth
 
         if 0 <= self.moisture < 25:
-            self.growth_speed *= 0.8
+            self.growth_speed *= 0.5
         elif 25 <= self.moisture < 50:
-            self.growth_speed *= 1.1
+            self.growth_speed *= 0.8
         elif 50 <= self.moisture < 75:
-            self.growth_speed *= 1.3
+            self.growth_speed *= 1.2
         elif 75 <= self.moisture <= 100:
-            self.growth_speed *= 1.1
+            self.growth_speed *= 1.5
 
         if self.temp > self.heat_res:
             if self.temp - self.heat_res >= 10:
