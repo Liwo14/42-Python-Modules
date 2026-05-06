@@ -6,7 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/30 08:43:34 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/06 07:54:12 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/06 08:35:30 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -446,7 +446,7 @@ if __name__ == "__main__":
     Vegetable.show_detailed(plant_4)
 
     nb_of_days: int = 0
-    while (nb_of_days < 7):
+    while (nb_of_days < 90):
         temp += random.randint(-2, 2)
         is_raining = random.randint(0, 4)
 

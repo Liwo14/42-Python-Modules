@@ -6,19 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/06 07:29:33 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/06 07:54:20 by ccolnat         ###   ########.fr        #
-#                                                                           #
-# ************************************************************************* #
-
-# ************************************************************************* #
-#                                                                           #
-#                                                      :::      ::::::::    #
-#  ft_plant_factory.py                               :+:      :+:    :+:    #
-#                                                  +:+ +:+         +:+      #
-#  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
-#                                              +#+#+#+#+#+   +#+            #
-#  Created: 2026/04/30 08:43:34 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/06 07:47:37 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/06 09:37:38 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -112,20 +100,20 @@ class Plant:
         soil_type: int
     ) -> None:
 
-        self.soil_type: str = soil_type_database(soil_type)
+        self._soil_type: str = soil_type_database(soil_type)
         """
         **The soil type**
         - Affect the base growth speed
 
         *(can be low, medium or high fertility soil)*
         """
-        self.size: float = 1
+        self._size: float = 1
         """
         **The size of the vegetable**
 
         *(Expressed in cm)*
         """
-        self.plant_age: int = 0
+        self._plant_age: int = 0
         """
         **The age of the plant**
         - Plants stop aging if dead or fully grown
@@ -134,52 +122,52 @@ class Plant:
 
 
         """
-        self.alive: bool = True
+        self._alive: bool = True
         """
         **State of the plant**
 
         *(Alive or Dead)*
         """
-        self.moisture: int = 50
+        self._moisture: int = 50
         """
         **Humidity level of the soil**
 
         *(affect grow speed)*
         """
-        self.growth_speed: float = 0
+        self._growth_speed: float = 0
         """
         **Real growth speed**
         - Affected by temperature and moisture
 
         *Extreme temperatures can kill plants*
         """
-        self.temp: float = 20
+        self._temp: float = 20
         """
         **Temperature of the day**
 
         *(expressed in °C)*
         """
-        self.old_temp: float = 20
+        self._old_temp: float = 20
         """
         **Temperature of the previous day**
 
         *(expressed in °C)*
         """
 
-    def raining(self, rain: bool):
+    def raining(self, rain: bool) -> None:
         """
         **Method to change the wether**
         - If True, will increase the humidity of 42%
         - If False, will decrease the humidity of 8%
         """
         if rain:
-            self.moisture += 42
-            if self.moisture > 100:
-                self.moisture = 100
+            self._moisture += 42
+            if self._moisture > 100:
+                self._moisture = 100
         elif not rain:
-            self.moisture -= 8
-            if self.moisture < 0:
-                self.moisture = 0
+            self._moisture -= 8
+            if self._moisture < 0:
+                self._moisture = 0
 
 
 class Vegetable(Plant):
@@ -203,15 +191,15 @@ class Vegetable(Plant):
     ) -> None:
 
         Plant.__init__(self, soil_type)
-        self.name: str
+        self._name: str
         """
         **The name of the vegetable**
         """
-        self.mature_size: float
+        self._max_size: float
         """
         **The size required to consider the vegetable mature**
         """
-        self.base_growth: float
+        self._base_growth: float
         """
         **Base growth speed**
 
@@ -219,7 +207,7 @@ class Vegetable(Plant):
 
         - Base growth speed only change depending on the soil type.
         """
-        self.heat_res: int
+        self._heat_res: int
         """
         **Heat res**
 
@@ -231,7 +219,7 @@ class Vegetable(Plant):
 
         - If temp reach 10 degrees above the res, plant dies.
         """
-        self.cold_res: int
+        self._cold_res: int
         """
         **Cold res**
 
@@ -243,68 +231,101 @@ class Vegetable(Plant):
         """
 
         (
-            self.name,
-            self.mature_size,
-            self.base_growth,
-            self.cold_res,
-            self.heat_res
+            self._name,
+            self._max_size,
+            self._base_growth,
+            self._cold_res,
+            self._heat_res
         ) = vegetable_database(variety)
-        print(f"{Y}{self.name} was created succesfully ! {RESET}")
+        print(f"{Y}{self._name} was created succesfully ! {RESET}")
 
         Vegetable.update_plant(self)
 
-        if self.soil_type == "low fertility soil   ":
-            self.base_growth = self.base_growth * 0.8
-        elif self.soil_type == "high fertility soil  ":
-            self.base_growth = self.base_growth * 1.2
+    @property
+    def get_height(self) -> float:
+        """
+        Allows outside code to READ the size safely.
+        """
+        return self._size
 
-    def age(self):
+    @get_height.setter
+    def set_height(self, height: float) -> None:
+        """
+        Validates the input before updating the height.
+        """
+        if height > self._max_size:
+            raise (ValueError)
+        elif height < 0:
+            self._size = 0
+        else:
+            self._size = height
+
+    @property
+    def get_age(self) -> int:
+        """
+        Allows outside code to READ the age safely.
+        """
+        return self._plant_age
+
+    @get_age.setter
+    def set_age(self, age: int) -> None:
+        """
+        Validates the input before updating age.
+        """
+        if age > 360:
+            raise (ValueError)
+        elif age < 0:
+            self._plant_age = 0
+        else:
+            self._plant_age = age
+
+    def age(self) -> None:
         """
         **Method to age the plant**
 
         *Wont age the plant if it's dead or fully grown*
         """
-        if self.alive and self.size != self.mature_size:
-            self.plant_age += 1
+        if self._alive and self._size != self._max_size:
+            self._plant_age += 1
 
-    def show(self):
+    def show(self) -> None:
         """
         **Method to show the daily change of the plant**
         """
-        if self.size == self.mature_size:
+        if self._size == self._max_size:
             return
-        if not self.alive:
+        if not self._alive:
             return
         else:
             print(" _______________________________")
-            print(f"|Day: {self.plant_age:2} | {self.name:12} is ", end="")
+            print(f"|Day: {self._plant_age:2} | {self._name:12} is ", end="")
             print(f"{G}Alive{RESET}|")
 
         print("|________|______________________|_____________________", end="")
         print("____________________")
-        if self.growth_speed >= self.base_growth:
-            print(f"|Size: {self.size:6.2f} cm | Growth: ", end="")
-            print(f"{G}{self.growth_speed:.2f}{RESET} cm/day |", end="")
+        if self._growth_speed >= self._base_growth:
+            print(f"|Size: {self._size:6.2f} cm | Growth: ", end="")
+            print(f"{G}{self._growth_speed:.2f}{RESET} cm/day |", end="")
         else:
-            print(f"|Size: {self.size:6.2f} cm | Growth: ", end="")
-            print(f"{R}{self.growth_speed:.2f}{RESET} cm/day |", end="")
+            print(f"|Size: {self._size:6.2f} cm | Growth: ", end="")
+            print(f"{R}{self._growth_speed:.2f}{RESET} cm/day |", end="")
 
-        if self.old_temp < self.temp:
+        if self._old_temp < self._temp:
             print(f" Temp is: {Y}⬈ ", end="")
-        elif self.old_temp == self.temp:
+        elif self._old_temp == self._temp:
             print(" Temp is: ⭢ ", end="")
-        elif self.old_temp > self.temp:
+        elif self._old_temp > self._temp:
             print(f" Temp is: {B}⬊ ", end="")
-        print(f"{self.temp:2}{RESET}°C |", end=" ")
+        print(f"{self._temp:2}{RESET}°C |", end=" ")
 
-        if 0 <= self.moisture < 25:
-            print(f"Humidity: {R}{self.moisture:3}{RESET}% |")
-        elif 25 <= self.moisture < 50:
-            print(f"Humidity: {Y}{self.moisture:3}{RESET}% |")
-        elif 50 <= self.moisture < 75:
-            print(f"Humidity: {B}{self.moisture:3}{RESET}% |")
-        elif 75 <= self.moisture <= 100:
-            print(f"Humidity: {G}{self.moisture:3}{RESET}% |")
+        if 0 <= self._moisture < 25:
+            print(f"Humidity: {R}{self._moisture:3}{RESET}% |")
+        elif 25 <= self._moisture < 50:
+            print(f"Humidity: {Y}{self._moisture:3}{RESET}% |")
+        elif 50 <= self._moisture < 75:
+            print(f"Humidity: {B}{self._moisture:3}{RESET}% |")
+        elif 75 <= self._moisture <= 100:
+            print(f"Humidity: {G}{self._moisture:3}{RESET}% |")
         print("|________________|_____________________|______________", end="")
         print("___|________________|")
 
@@ -313,50 +334,50 @@ class Vegetable(Plant):
         **Method to show all the summary of the plant growth**
         """
         print("--------------------------------------------------------------")
-        if not self.alive:
-            print(f"{self.name} {R}died{RESET} on day ", end="")
-            print(f"{self.plant_age} at {R}", end="")
-            print(f"{(self.size / self.mature_size * 100):.2f}", end="")
-            print(f"{RESET} % maturity ({self.size:.2f} cm)")
+        if not self._alive:
+            print(f"{self._name} {R}died{RESET} on day ", end="")
+            print(f"{self._plant_age} at {R}", end="")
+            print(f"{(self._size / self._max_size * 100):.2f}", end="")
+            print(f"{RESET} % maturity ({self._size:.2f} cm)")
             return
         print(f"State : {G}Alive{RESET}")
-        print(f"Variety : {B}{self.name}{RESET}")
+        print(f"Variety : {B}{self._name}{RESET}")
 
-        if self.soil_type == "low fertility soil   ":
-            print(f"Planted in : {Y}{self.soil_type}{RESET}")
-        elif self.soil_type == "high fertility soil  ":
-            print(f"Planted in : {G}{self.soil_type}{RESET}")
+        if self._soil_type == "low fertility soil   ":
+            print(f"Planted in : {Y}{self._soil_type}{RESET}")
+        elif self._soil_type == "high fertility soil  ":
+            print(f"Planted in : {G}{self._soil_type}{RESET}")
         else:
-            print(f"Planted in : {B}{self.soil_type}{RESET}")
-        print(f"Age : {self.plant_age} days")
-        print(f"Size : {self.size:.2f} cm")
-        if self.size == self.mature_size:
-            print(f"Maturity : {G}{(self.size / self.mature_size * 100):.2f}%")
+            print(f"Planted in : {B}{self._soil_type}{RESET}")
+        print(f"Age : {self._plant_age} days")
+        print(f"Size : {self._size:.2f} cm")
+        if self._size == self._max_size:
+            print(f"Maturity: {G}{(self._size / self._max_size * 100):.2f}%")
             print(f"{RESET}")
         else:
-            print(f"Maturity : {Y}{(self.size / self.mature_size * 100):.2f}%")
+            print(f"Maturity: {Y}{(self._size / self._max_size * 100):.2f}%")
             print(f"{RESET}")
 
-        print(f"Base growth speed : {self.base_growth:.2f}cm per day")
-        print(f"Current growth speed : {self.growth_speed:.2f}cm per day")
-        print(f"Cold res down to: {self.cold_res}°C")
-        print(f"Heat res up to: {self.heat_res}°C")
+        print(f"Base growth speed : {self._base_growth:.2f}cm per day")
+        print(f"Current growth speed : {self._growth_speed:.2f}cm per day")
+        print(f"Cold res down to: {self._cold_res}°C")
+        print(f"Heat res up to: {self._heat_res}°C")
 
-    def grow(self):
+    def grow(self) -> None:
         """
         **Method to grow the plant**
         - Prints a message when fully grown
 
         *Wont grow the plant if it's fully grown already*
         """
-        if self.size == self.mature_size:
+        if self._size == self._max_size:
             return
-        if self.size < self.mature_size:
-            self.size += self.growth_speed
-            if self.size > self.mature_size:
-                self.size = self.mature_size
-                print(f"{G}{self.name} is fully grown after", end="")
-                print(f" {self.plant_age} days !{RESET}")
+        if self._size < self._max_size:
+            self._size += self._growth_speed
+            if self._size > self._max_size:
+                self._size = self._max_size
+                print(f"{G}{self._name} is fully grown after", end="")
+                print(f" {self._plant_age} days !{RESET}")
 
     def change_temp(self, temp: float) -> None:
         """
@@ -379,8 +400,8 @@ class Vegetable(Plant):
             print(f"{R}Invalid temp, too low{RESET}")
             return
 
-        self.old_temp = self.temp
-        self.temp = temp
+        self._old_temp = self._temp
+        self._temp = temp
 
     def update_plant(self) -> None:
         """
@@ -392,43 +413,43 @@ class Vegetable(Plant):
         *Also kill the plant if temeratures are above or below plant
         resistances*
         """
-        if not self.alive:
+        if not self._alive:
             return
-        if self.size == self.mature_size:
+        if self._size == self._max_size:
             return
-        print(f"{Y}{self.name} was updated succesfully ! {RESET}")
-        self.growth_speed = self.base_growth
+        print(f"{Y}{self._name} was updated succesfully ! {RESET}")
+        self._growth_speed = self._base_growth
 
-        if 0 <= self.moisture < 25:
-            self.growth_speed *= 0.5
-        elif 25 <= self.moisture < 50:
-            self.growth_speed *= 0.8
-        elif 50 <= self.moisture < 75:
-            self.growth_speed *= 1.2
-        elif 75 <= self.moisture <= 100:
-            self.growth_speed *= 1.5
+        if 0 <= self._moisture < 25:
+            self._growth_speed *= 0.5
+        elif 25 <= self._moisture < 50:
+            self._growth_speed *= 0.8
+        elif 50 <= self._moisture < 75:
+            self._growth_speed *= 1.2
+        elif 75 <= self._moisture <= 100:
+            self._growth_speed *= 1.5
 
-        if self.temp > self.heat_res:
-            if self.temp - self.heat_res >= 10:
-                self.alive = False
-                self.growth_speed = 0
-                print(f"{R}{self.name} has grown {self.size:.2f} cm", end="")
-                print("and died from the heat after {self.plant_age} days")
+        if self._temp > self._heat_res:
+            if self._temp - self._heat_res >= 10:
+                self._alive = False
+                self._growth_speed = 0
+                print(f"{R}{self._name} has grown {self._size:.2f} cm", end="")
+                print("and died from the heat after {self._plant_age} days")
                 print(f"{RESET}")
                 return
             else:
-                self.growth_speed *= (1 - ((self.temp - self.heat_res) / 10))
+                self._growth_speed *= (1 - (self._temp - self._heat_res) / 10)
 
-        if self.temp < self.cold_res:
-            self.alive = False
-            self.growth_speed = 0
-            print(f"{R}{self.name} has grown {self.size:.2f} cm", end="")
-            print("and died from the cold after {self.plant_age} days{RESET}")
+        if self._temp < self._cold_res:
+            self._alive = False
+            self._growth_speed = 0
+            print(f"{R}{self._name} has grown {self._size:.2f} cm", end="")
+            print("and died from the cold after {self._plant_age} days{RESET}")
             return
-        if self.temp < 0:
-            self.growth_speed = 0
-        if 0 <= self.temp <= 9:
-            self.growth_speed *= self.temp / 10
+        if self._temp < 0:
+            self._growth_speed = 0
+        if 0 <= self._temp <= 9:
+            self._growth_speed *= self._temp / 10
 
 
 if __name__ == "__main__":
