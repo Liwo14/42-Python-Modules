@@ -1,12 +1,12 @@
 # ************************************************************************* #
 #                                                                           #
 #                                                      :::      ::::::::    #
-#  ft_plant_growth.py                                :+:      :+:    :+:    #
+#  ft_plant_factory.py                               :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/30 08:43:34 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/06 07:06:16 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/06 07:20:01 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -239,6 +239,8 @@ class Vegetable(Plant):
         ) = vegetable_database(variety)
         print(f"{Y}{self.name} was created succesfully ! {RESET}")
 
+        Vegetable.update_plant(self)
+
         if self.soil_type == "low fertility soil   ":
             self.base_growth = self.base_growth * 0.8
         elif self.soil_type == "high fertility soil  ":
@@ -417,70 +419,41 @@ if __name__ == "__main__":
 
     print(f"{Y}Starting temp: {temp}°C{RESET}")
     print(f"{Y}--------------------{RESET}")
-    plant_1 = Vegetable(random.randint(1, 3), random.randint(1, 18))
-    plant_2 = Vegetable(random.randint(1, 3), random.randint(1, 18))
-    plant_3 = Vegetable(random.randint(1, 3), random.randint(1, 18))
-    plant_4 = Vegetable(random.randint(1, 3), random.randint(1, 18))
+    plant_01 = Vegetable(random.randint(1, 3), 1)
+    plant_02 = Vegetable(random.randint(1, 3), 2)
+    plant_03 = Vegetable(random.randint(1, 3), 3)
+    plant_04 = Vegetable(random.randint(1, 3), 4)
+    plant_05 = Vegetable(random.randint(1, 3), 5)
+    plant_06 = Vegetable(random.randint(1, 3), 6)
+    plant_07 = Vegetable(random.randint(1, 3), 7)
+    plant_08 = Vegetable(random.randint(1, 3), 8)
+    plant_09 = Vegetable(random.randint(1, 3), 9)
+    plant_10 = Vegetable(random.randint(1, 3), 10)
+    plant_11 = Vegetable(random.randint(1, 3), 11)
+    plant_12 = Vegetable(random.randint(1, 3), 12)
+    plant_13 = Vegetable(random.randint(1, 3), 13)
+    plant_14 = Vegetable(random.randint(1, 3), 14)
+    plant_15 = Vegetable(random.randint(1, 3), 15)
+    plant_16 = Vegetable(random.randint(1, 3), 16)
+    plant_17 = Vegetable(random.randint(1, 3), 17)
+    plant_18 = Vegetable(random.randint(1, 3), 18)
     print(f"{Y}--------------------{RESET}")
 
-    Vegetable.update_plant(plant_1)
-    Vegetable.update_plant(plant_2)
-    Vegetable.update_plant(plant_3)
-    Vegetable.update_plant(plant_4)
-    print(f"{Y}--------------------{RESET}")
-
-    Vegetable.show_detailed(plant_1)
-    Vegetable.show_detailed(plant_2)
-    Vegetable.show_detailed(plant_3)
-    Vegetable.show_detailed(plant_4)
-
-    nb_of_days: int = 0
-    while (nb_of_days < 7):
-        temp += random.randint(-2, 2)
-        is_raining = random.randint(0, 4)
-
-        Vegetable.change_temp(plant_1, temp)
-        Vegetable.change_temp(plant_2, temp)
-        Vegetable.change_temp(plant_3, temp)
-        Vegetable.change_temp(plant_4, temp)
-
-        if is_raining == 0:
-            print(f"{B}It's raining today !{RESET}")
-            Vegetable.raining(plant_1, True)
-            Vegetable.raining(plant_2, True)
-            Vegetable.raining(plant_3, True)
-            Vegetable.raining(plant_4, True)
-        else:
-            Vegetable.raining(plant_1, False)
-            Vegetable.raining(plant_2, False)
-            Vegetable.raining(plant_3, False)
-            Vegetable.raining(plant_4, False)
-
-        Vegetable.grow(plant_1)
-        Vegetable.grow(plant_2)
-        Vegetable.grow(plant_3)
-        Vegetable.grow(plant_4)
-
-        Vegetable.age(plant_1)
-        Vegetable.age(plant_2)
-        Vegetable.age(plant_3)
-        Vegetable.age(plant_4)
-
-        Vegetable.show(plant_1)
-        Vegetable.show(plant_2)
-        Vegetable.show(plant_3)
-        Vegetable.show(plant_4)
-
-        Vegetable.update_plant(plant_1)
-        Vegetable.update_plant(plant_2)
-        Vegetable.update_plant(plant_3)
-        Vegetable.update_plant(plant_4)
-        nb_of_days += 1
-
-    print("--------------------------Summary-----------------------------")
-    Vegetable.show_detailed(plant_1)
-    Vegetable.show_detailed(plant_2)
-    Vegetable.show_detailed(plant_3)
-    Vegetable.show_detailed(plant_4)
-    print("------------------------------------------------------------------")
-    
+    Vegetable.show(plant_01)
+    Vegetable.show(plant_02)
+    Vegetable.show(plant_03)
+    Vegetable.show(plant_04)
+    Vegetable.show(plant_05)
+    Vegetable.show(plant_06)
+    Vegetable.show(plant_07)
+    Vegetable.show(plant_08)
+    Vegetable.show(plant_09)
+    Vegetable.show(plant_10)
+    Vegetable.show(plant_11)
+    Vegetable.show(plant_12)
+    Vegetable.show(plant_13)
+    Vegetable.show(plant_14)
+    Vegetable.show(plant_15)
+    Vegetable.show(plant_16)
+    Vegetable.show(plant_17)
+    Vegetable.show(plant_18)
