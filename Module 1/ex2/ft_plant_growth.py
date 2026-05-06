@@ -6,7 +6,7 @@
 #  By: root <root@student.42.fr>                 +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/30 08:43:34 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/06 00:07:59 by root            ###   ########.fr        #
+#  Updated: 2026/05/06 00:43:21 by root            ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -171,7 +171,7 @@ class Vegetable(Plant):
             self.cold_res,
             self.heat_res
         ) = vegetable_database(variety)
-        print(f"{Y}{self.name:12} was created succesfully ! {RESET}")
+        print(f"{Y}{self.name} was created succesfully ! {RESET}")
 
         if self.soil_type == "low fertility soil   ":
             self.base_growth = self.base_growth * 0.8
@@ -225,7 +225,7 @@ class Vegetable(Plant):
         """
         Method to show all the attributes of the plant
         """
-        print("_____________________________________________________________________________")
+        print("-------------------------------------------------------------------------------")
         if not self.alive:
             print(f"{self.name} {R}died{RESET} on day {self.plant_age} at {R}{(self.size / self.mature_size * 100):.2f}{RESET} % maturity ({self.size:.2f} cm)")
             return
@@ -328,29 +328,32 @@ if __name__ == "__main__":
     temp:int
     is_raining: int
     temp = random.randint(15, 30)
+    print(f"{Y}--------------------{RESET}")
     print(f"{Y}Starting simulation{RESET}")
-    print(f"{Y}*******************")
-    print(f"{Y}*******************")
-    print(f"{Y}*******************")
-    print(f"{Y}*******************")
-    print(f"{Y}*******************")
-    print(f"{Y}*******************")
-    print(f"{Y}Starting temp: {temp}{RESET}")
+    print(f"{Y}--------------------{RESET}")
+
+    print(f"{Y}Starting temp: {temp}°C{RESET}")
+    print(f"{Y}--------------------{RESET}")
     plant_1 = Vegetable(random.randint(1, 3), random.randint(1, 18))
     plant_2 = Vegetable(random.randint(1, 3), random.randint(1, 18))
     plant_3 = Vegetable(random.randint(1, 3), random.randint(1, 18))
     plant_4 = Vegetable(random.randint(1, 3), random.randint(1, 18))
+    print(f"{Y}--------------------{RESET}")
+
     Vegetable.update_plant(plant_1)
     Vegetable.update_plant(plant_2)
     Vegetable.update_plant(plant_3)
     Vegetable.update_plant(plant_4)
+    print(f"{Y}--------------------{RESET}")
+
     Vegetable.show_detailed(plant_1)
     Vegetable.show_detailed(plant_2)
     Vegetable.show_detailed(plant_3)
     Vegetable.show_detailed(plant_4)
 
-    i: int = 0
-    while(i < 90):
+
+    nb_of_days: int = 0
+    while(nb_of_days < 90):
         temp += random.randint(-2, 2)
         is_raining = random.randint(0, 4)
     
@@ -375,6 +378,7 @@ if __name__ == "__main__":
         Vegetable.grow(plant_2)
         Vegetable.grow(plant_3)
         Vegetable.grow(plant_4)
+
         Vegetable.age(plant_1)
         Vegetable.age(plant_2)
         Vegetable.age(plant_3)
@@ -389,8 +393,10 @@ if __name__ == "__main__":
         Vegetable.update_plant(plant_2)
         Vegetable.update_plant(plant_3)
         Vegetable.update_plant(plant_4)
-        i += 1
+        nb_of_days += 1
+
     Vegetable.show_detailed(plant_1)
     Vegetable.show_detailed(plant_2)
     Vegetable.show_detailed(plant_3)
     Vegetable.show_detailed(plant_4)
+    print("-------------------------------------------------------------------------------")
