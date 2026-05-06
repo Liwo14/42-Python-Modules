@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  ft_plant_growth.py                                :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: root <root@student.42.fr>                 +#+  +:+       +#+         #
+#  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/30 08:43:34 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/06 00:43:21 by root            ###   ########.fr        #
+#  Updated: 2026/05/06 06:13:41 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -178,11 +178,9 @@ class Vegetable(Plant):
         elif self.soil_type == "high fertility soil  ":
             self.base_growth = self.base_growth * 1.2
 
-
     def age(self):
         if self.alive and self.size != self.mature_size:
             self.plant_age += 1
-
 
     def show(self):
         """
@@ -194,21 +192,24 @@ class Vegetable(Plant):
             return
         else:
             print(" _______________________________")
-            print(f"|Day: {self.plant_age:2} | {self.name:12} is {G}Alive{RESET}|")
+            print(f"|Day: {self.plant_age:2} | {self.name:12} is ", end="")
+            print(f"{G}Alive{RESET}|")
 
-        print("|_______________________________|_____________________________________________")
+        print("|_______________________________|_____________________________")
         if self.growth_speed >= self.base_growth:
-            print(f"|Size: {self.size:6.2f} cm | Growth: {G}{self.growth_speed:.2f}{RESET} cm/day |",end= " ")
+            print(f"|Size: {self.size:6.2f} cm | Growth: ", end="")
+            print(f"{G}{self.growth_speed:.2f}{RESET} cm/day |", end="")
         else:
-            print(f"|Size: {self.size:6.2f} cm | Growth: {R}{self.growth_speed:.2f}{RESET} cm/day |",end= " ")
+            print(f"|Size: {self.size:6.2f} cm | Growth: ", end="")
+            print(f"{R}{self.growth_speed:.2f}{RESET} cm/day |", end="")
 
         if self.old_temp < self.temp:
-            print(f"Temp is: {Y}⬈ ",end="")
+            print(f"Temp is: {Y}⬈ ", end="")
         elif self.old_temp == self.temp:
-            print(f"Temp is: ⭢ ",end="")
+            print("Temp is: ⭢ ", end="")
         elif self.old_temp > self.temp:
-            print(f"Temp is: {B}⬊ ",end="")
-        print(f"{self.temp:2}{RESET}°C |",end=" ")
+            print(f"Temp is: {B}⬊ ", end="")
+        print(f"{self.temp:2}{RESET}°C |", end=" ")
 
         if 0 <= self.moisture < 25:
             print(f"Humidity: {R}{self.moisture:3}{RESET}%     |")
@@ -218,16 +219,18 @@ class Vegetable(Plant):
             print(f"Humidity: {B}{self.moisture:3}{RESET}%     |")
         elif 75 <= self.moisture <= 100:
             print(f"Humidity: {G}{self.moisture:3}{RESET}%     |")
-        print("|_____________________________________________________________________________|")
-
+        print("|____________________________________________________________|")
 
     def show_detailed(self):
         """
         Method to show all the attributes of the plant
         """
-        print("-------------------------------------------------------------------------------")
+        print("--------------------------------------------------------------")
         if not self.alive:
-            print(f"{self.name} {R}died{RESET} on day {self.plant_age} at {R}{(self.size / self.mature_size * 100):.2f}{RESET} % maturity ({self.size:.2f} cm)")
+            print(f"{self.name} {R}died{RESET} on day ", end="")
+            print(f"{self.plant_age} at {R}", end="")
+            print(f"{(self.size / self.mature_size * 100):.2f}", end="")
+            print(f"{RESET} % maturity ({self.size:.2f} cm)")
             return
         print(f"State : {G}Alive{RESET}")
         print(f"Variety : {B}{self.name}{RESET}")
@@ -241,15 +244,16 @@ class Vegetable(Plant):
         print(f"Age : {self.plant_age} days")
         print(f"Size : {self.size:.2f} cm")
         if self.size == self.mature_size:
-            print(f"Maturity : {G}{(self.size / self.mature_size * 100):.2f}{RESET} %")
+            print(f"Maturity : {G}{(self.size / self.mature_size * 100):.2f}%")
+            print(f"{RESET}")
         else:
-            print(f"Maturity : {Y}{(self.size / self.mature_size * 100):.2f}{RESET} %")
+            print(f"Maturity : {Y}{(self.size / self.mature_size * 100):.2f}%")
+            print(f"{RESET}")
 
         print(f"Base growth speed : {self.base_growth:.2f}cm per day")
         print(f"Current growth speed : {self.growth_speed:.2f}cm per day")
         print(f"Cold res down to: {self.cold_res}°C")
         print(f"Heat res up to: {self.heat_res}°C")
-
 
     def grow(self):
         if self.size == self.mature_size:
@@ -258,8 +262,8 @@ class Vegetable(Plant):
             self.size += self.growth_speed
             if self.size > self.mature_size:
                 self.size = self.mature_size
-                print(f"{G}{self.name} is fully grown after {self.plant_age} days !{RESET}")
-
+                print(f"{G}{self.name} is fully grown after", end="")
+                print(f" {self.plant_age} days !{RESET}")
 
     def change_temp(self, temp: float):
         """
@@ -285,7 +289,6 @@ class Vegetable(Plant):
         self.old_temp = self.temp
         self.temp = temp
 
-
     def update_plant(self):
         if not self.alive:
             return
@@ -307,7 +310,9 @@ class Vegetable(Plant):
             if self.temp - self.heat_res >= 10:
                 self.alive = False
                 self.growth_speed = 0
-                print(f"{R}{self.name} has grown {self.size:.2f} cm and died from the heat after {self.plant_age} days{RESET}")
+                print(f"{R}{self.name} has grown {self.size:.2f} cm", end="")
+                print("and died from the heat after {self.plant_age} days")
+                print(f"{RESET}")
                 return
             else:
                 self.growth_speed *= (1 - ((self.temp - self.heat_res) / 10))
@@ -315,7 +320,8 @@ class Vegetable(Plant):
         if self.temp < self.cold_res:
             self.alive = False
             self.growth_speed = 0
-            print(f"{R}{self.name} has grown {self.size:.2f} cm and died from the cold after {self.plant_age} days{RESET}")
+            print(f"{R}{self.name} has grown {self.size:.2f} cm", end="")
+            print("and died from the cold after {self.plant_age} days{RESET}")
             return
         if self.temp < 0:
             self.growth_speed = 0
@@ -325,7 +331,7 @@ class Vegetable(Plant):
 
 if __name__ == "__main__":
     import random
-    temp:int
+    temp: int
     is_raining: int
     temp = random.randint(15, 30)
     print(f"{Y}--------------------{RESET}")
@@ -351,17 +357,16 @@ if __name__ == "__main__":
     Vegetable.show_detailed(plant_3)
     Vegetable.show_detailed(plant_4)
 
-
     nb_of_days: int = 0
-    while(nb_of_days < 90):
+    while (nb_of_days < 90):
         temp += random.randint(-2, 2)
         is_raining = random.randint(0, 4)
-    
+
         Vegetable.change_temp(plant_1, temp)
         Vegetable.change_temp(plant_2, temp)
         Vegetable.change_temp(plant_3, temp)
         Vegetable.change_temp(plant_4, temp)
-    
+
         if is_raining == 0:
             print(f"{B}It's raining today !{RESET}")
             Vegetable.raining(plant_1, True)
@@ -373,7 +378,7 @@ if __name__ == "__main__":
             Vegetable.raining(plant_2, False)
             Vegetable.raining(plant_3, False)
             Vegetable.raining(plant_4, False)
-    
+
         Vegetable.grow(plant_1)
         Vegetable.grow(plant_2)
         Vegetable.grow(plant_3)
@@ -383,7 +388,7 @@ if __name__ == "__main__":
         Vegetable.age(plant_2)
         Vegetable.age(plant_3)
         Vegetable.age(plant_4)
-        
+
         Vegetable.show(plant_1)
         Vegetable.show(plant_2)
         Vegetable.show(plant_3)
@@ -395,8 +400,9 @@ if __name__ == "__main__":
         Vegetable.update_plant(plant_4)
         nb_of_days += 1
 
+    print("---------------------------Summary--------------------------------")
     Vegetable.show_detailed(plant_1)
     Vegetable.show_detailed(plant_2)
     Vegetable.show_detailed(plant_3)
     Vegetable.show_detailed(plant_4)
-    print("-------------------------------------------------------------------------------")
+    print("------------------------------------------------------------------")
