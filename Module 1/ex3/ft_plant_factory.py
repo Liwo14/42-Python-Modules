@@ -6,7 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/30 08:43:34 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/06 07:54:17 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/06 11:50:15 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -54,35 +54,35 @@ def vegetable_database(variety: int) -> tuple[str, float, float, int, int]:
     elif variety == 3:
         return "Onion", 40, 0.38, -1, 30
     elif variety == 4:
-        return "Spelt", 11, 0.80, -5, 30
+        return "Spelt", 110, 0.80, -5, 30
     elif variety == 5:
         return "Turnip", 35, 0.64, -5, 17
     elif variety == 6:
         return "Parsnip", 50, 0.45, -10,  22
     elif variety == 7:
-        return "Rice", 11, 0.80, 8, 36
+        return "Rice", 110, 0.80, 8, 36
     elif variety == 8:
-        return "Rye", 13, 0.90, -12, 17
+        return "Rye", 135, 0.90, -12, 17
     elif variety == 9:
         return "Soybean", 80, 0.80, -5, 30
     elif variety == 10:
-        return "Amaranth", 12, 1.20, 6, 32
+        return "Amaranth", 125, 1.20, 6, 32
     elif variety == 11:
         return "Bell Pepper", 75, 0.94, 8, 24
     elif variety == 12:
-        return "Cassava", 22, 0.80, 4, 34
+        return "Cassava", 225, 0.80, 4, 34
     elif variety == 13:
         return "Peanut", 40, 0.30, 10, 32
     elif variety == 14:
-        return "Pineapple", 10, 0.20, 6, 38
+        return "Pineapple", 105, 0.20, 6, 38
     elif variety == 15:
-        return "Sunflower", 22, 2.20, -5, 30
+        return "Sunflower", 225, 2.20, -5, 30
     elif variety == 16:
         return "Pumpkin", 45, 0.43, -5, 30
     elif variety == 17:
         return "Cabbage", 50, 0.55, -5, 25
     else:
-        return "Dragon Fruit", 20, 0.80, 0, 28
+        return "Dragon Fruit", 200, 0.80, 0, 28
 
 
 class Plant:

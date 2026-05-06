@@ -6,7 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/06 07:29:33 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/06 09:37:38 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/06 11:52:51 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -28,9 +28,12 @@ def soil_type_database(soil: int) -> str:
     """
     if soil == 1:
         return "low fertility soil   "
+    elif soil == 2:
+        return "medium fertility soil"
     elif soil == 3:
         return "high fertility soil  "
     else:
+        print(f"{Y}Invalid value, setting to default value{RESET}")
         return "medium fertility soil"
 
 
@@ -54,35 +57,35 @@ def vegetable_database(variety: int) -> tuple[str, float, float, int, int]:
     elif variety == 3:
         return "Onion", 40, 0.38, -1, 30
     elif variety == 4:
-        return "Spelt", 11, 0.80, -5, 30
+        return "Spelt", 110, 0.80, -5, 30
     elif variety == 5:
         return "Turnip", 35, 0.64, -5, 17
     elif variety == 6:
         return "Parsnip", 50, 0.45, -10,  22
     elif variety == 7:
-        return "Rice", 11, 0.80, 8, 36
+        return "Rice", 110, 0.80, 8, 36
     elif variety == 8:
-        return "Rye", 13, 0.90, -12, 17
+        return "Rye", 135, 0.90, -12, 17
     elif variety == 9:
         return "Soybean", 80, 0.80, -5, 30
     elif variety == 10:
-        return "Amaranth", 12, 1.20, 6, 32
+        return "Amaranth", 125, 1.20, 6, 32
     elif variety == 11:
         return "Bell Pepper", 75, 0.94, 8, 24
     elif variety == 12:
-        return "Cassava", 22, 0.80, 4, 34
+        return "Cassava", 225, 0.80, 4, 34
     elif variety == 13:
         return "Peanut", 40, 0.30, 10, 32
     elif variety == 14:
-        return "Pineapple", 10, 0.20, 6, 38
+        return "Pineapple", 105, 0.20, 6, 38
     elif variety == 15:
-        return "Sunflower", 22, 2.20, -5, 30
+        return "Sunflower", 225, 2.20, -5, 30
     elif variety == 16:
         return "Pumpkin", 45, 0.43, -5, 30
     elif variety == 17:
         return "Cabbage", 50, 0.55, -5, 25
     else:
-        return "Dragon Fruit", 20, 0.80, 0, 28
+        return "Dragon Fruit", 200, 0.80, 0, 28
 
 
 class Plant:
@@ -169,6 +172,27 @@ class Plant:
             if self._moisture < 0:
                 self._moisture = 0
 
+    @property
+    def get_temp(self) -> float:
+        """
+        Allows outside code to READ the temp safely.
+        """
+        return self._temp
+
+    @property
+    def get_soil(self) -> str:
+        """
+        Allows outside code to READ the soil type safely.
+        """
+        return self._soil_type
+
+    @get_soil.setter
+    def set_soil(self, type: int) -> None:
+        """
+        Validates the input before updating the soil.
+        """
+        self._soil_type: str = soil_type_database(type)
+
 
 class Vegetable(Plant):
     """
@@ -254,9 +278,15 @@ class Vegetable(Plant):
         Validates the input before updating the height.
         """
         if height > self._max_size:
-            raise (ValueError)
+            print(f"{R}Error, value higher than the maximum height")
+            print(f"{Y}Height unchanged: ({self._size} cm){RESET}")
+            return
         elif height < 0:
-            self._size = 0
+            print(f"{Y}Warning, negative value,", end=" ")
+            print(f"setting height to minimum instead{RESET}")
+
+            self._size = 1
+            return
         else:
             self._size = height
 
@@ -384,24 +414,30 @@ class Vegetable(Plant):
         **Method to change the temperature**
         """
         if 5500 > temp >= 60:
+            print(f"{R}Invalid temp: ({temp}°C), too high{RESET}", end=" ")
             print("Damn, climate change goes hard today")
-            print(f"{R}Invalid temp, too high{RESET}")
+            print(f"{Y}Temperature unchanged ({self._temp}°C){RESET}")
             return
         elif temp >= 5500:
-            print("Hotter that the sun, kinda too much for plants isn't it ?")
-            print(f"{R}Invalid temp, too high{RESET}")
+            print(f"{R}Invalid temp:{RESET}", end=" ")
+            print("Hotter that the sun, kinda too hot for plants", end=" ")
+            print("isn't it?")
+            print(f"{Y}Temperature unchanged ({self._temp}°C){RESET}")
             return
 
-        if -273.15 <= temp <= -100:
+        elif -273.15 <= temp <= -60:
+            print(f"{R}Invalid temp: ({temp}°C), too low{RESET}", end=" ")
             print("You may need to turn the heater On")
-            print(f"{R}Invalid temp, too low{RESET}")
+            print(f"{Y}Temperature unchanged ({self._temp}°C){RESET}")
         elif temp < -273.15:
+            print(f"{R}Invalid temp:{RESET}", end=" ")
             print("Colder than the laws of physics, damn")
-            print(f"{R}Invalid temp, too low{RESET}")
+            print(f"{Y}Temperature unchanged ({self._temp}°C){RESET}")
             return
 
-        self._old_temp = self._temp
-        self._temp = temp
+        else:
+            self._old_temp = self._temp
+            self._temp = temp
 
     def update_plant(self) -> None:
         """
@@ -458,46 +494,116 @@ if __name__ == "__main__":
     is_raining: int
     temp = random.randint(15, 30)
     print(f"{Y}--------------------{RESET}")
-    print(f"{Y}Starting simulation{RESET}")
+    print(f"{Y}--Starting testing--{RESET}")
     print(f"{Y}--------------------{RESET}")
 
-    print(f"{Y}Starting temp: {temp}°C{RESET}")
-    print(f"{Y}--------------------{RESET}")
-    plant_01 = Vegetable(random.randint(1, 3), 1)
-    plant_02 = Vegetable(random.randint(1, 3), 2)
-    plant_03 = Vegetable(random.randint(1, 3), 3)
-    plant_04 = Vegetable(random.randint(1, 3), 4)
-    plant_05 = Vegetable(random.randint(1, 3), 5)
-    plant_06 = Vegetable(random.randint(1, 3), 6)
-    plant_07 = Vegetable(random.randint(1, 3), 7)
-    plant_08 = Vegetable(random.randint(1, 3), 8)
-    plant_09 = Vegetable(random.randint(1, 3), 9)
-    plant_10 = Vegetable(random.randint(1, 3), 10)
-    plant_11 = Vegetable(random.randint(1, 3), 11)
-    plant_12 = Vegetable(random.randint(1, 3), 12)
-    plant_13 = Vegetable(random.randint(1, 3), 13)
-    plant_14 = Vegetable(random.randint(1, 3), 14)
-    plant_15 = Vegetable(random.randint(1, 3), 15)
-    plant_16 = Vegetable(random.randint(1, 3), 16)
-    plant_17 = Vegetable(random.randint(1, 3), 17)
-    plant_18 = Vegetable(random.randint(1, 3), 18)
+    plant_01 = Vegetable(1, 1)
+    plant_02 = Vegetable(1, 2)
+    plant_03 = Vegetable(1, 3)
+    plant_04 = Vegetable(1, 4)
     print(f"{Y}--------------------{RESET}")
 
-    Vegetable.show(plant_01)
-    Vegetable.show(plant_02)
-    Vegetable.show(plant_03)
-    Vegetable.show(plant_04)
-    Vegetable.show(plant_05)
-    Vegetable.show(plant_06)
-    Vegetable.show(plant_07)
-    Vegetable.show(plant_08)
-    Vegetable.show(plant_09)
-    Vegetable.show(plant_10)
-    Vegetable.show(plant_11)
-    Vegetable.show(plant_12)
-    Vegetable.show(plant_13)
-    Vegetable.show(plant_14)
-    Vegetable.show(plant_15)
-    Vegetable.show(plant_16)
-    Vegetable.show(plant_17)
-    Vegetable.show(plant_18)
+    test = plant_01.get_soil
+    print(f"plant_01 : {test}")
+    test = plant_02.get_soil
+    print(f"plant_02 : {test}")
+    test = plant_03.get_soil
+    print(f"plant_03 : {test}")
+    test = plant_04.get_soil
+    print(f"plant_04 : {test}")
+    print(f"{Y}-------------------------{RESET}")
+    test = plant_01.get_temp
+    print(f"plant_01 : {test}°C")
+    test = plant_02.get_temp
+    print(f"plant_02 : {test}°C")
+    test = plant_03.get_temp
+    print(f"plant_03 : {test}°C")
+    test = plant_04.get_temp
+    print(f"plant_04 : {test}°C")
+    print(f"{Y}-------------------------{RESET}")
+    test = plant_01.get_height
+    print(f"plant_01 : {test} cm")
+    test = plant_02.get_height
+    print(f"plant_02 : {test} cm")
+    test = plant_03.get_height
+    print(f"plant_03 : {test} cm")
+    test = plant_04.get_height
+    print(f"plant_04 : {test} cm")
+
+    print(f"{Y}-------------------------{RESET}")
+    print(f"{Y}---Upgrading soil type---{RESET}")
+    print(f"{Y}-------------------------{RESET}")
+
+    plant_01.set_soil = 3
+    test = plant_01.get_soil
+    print(f"plant_01 : {test}")
+    plant_02.set_soil = 3
+    test = plant_02.get_soil
+    print(f"plant_02 : {test}")
+    plant_03.set_soil = (42000000)
+    test = plant_03.get_soil
+    print(f"plant_03 : {test}")
+    plant_04.set_soil = (-100000)
+    test = plant_04.get_soil
+    print(f"plant_04 : {test}")
+
+    print(f"{Y}-------------------------{RESET}")
+    print(f"{Y}------Changing temp------{RESET}")
+    print(f"{Y}-------------------------{RESET}")
+
+    Vegetable.change_temp(plant_01, -60)
+    Vegetable.change_temp(plant_02, 72)
+    Vegetable.change_temp(plant_03, -2000000)
+    Vegetable.change_temp(plant_04, 42000000)
+
+    print(f"{Y}-------------------------{RESET}")
+    print(f"{Y}-----Re-Changing temp----{RESET}")
+    print(f"{Y}-------------------------{RESET}")
+
+    Vegetable.change_temp(plant_01, -14)
+    Vegetable.change_temp(plant_02, 14)
+    Vegetable.change_temp(plant_03, 42)
+    Vegetable.change_temp(plant_04, -42)
+
+    test = plant_01.get_temp
+    print(f"plant_01 : {test}°C")
+    test = plant_02.get_temp
+    print(f"plant_02 :  {test}°C")
+    test = plant_03.get_temp
+    print(f"plant_03 :  {test}°C")
+    test = plant_04.get_temp
+    print(f"plant_04 : {test}°C")
+
+    print(f"{Y}-------------------------{RESET}")
+    print(f"{Y}-----Changing height-----{RESET}")
+    print(f"{Y}-------------------------{RESET}")
+
+    plant_01.set_height = 3
+    test = plant_01.get_height
+    print(f"plant_01 : {test} cm")
+    plant_02.set_height = 42
+    test = plant_02.get_height
+    print(f"plant_02 : {test} cm")
+    plant_03.set_height = 31
+    test = plant_03.get_height
+    print(f"plant_03 : {test} cm")
+    plant_04.set_height = 97
+    test = plant_04.get_height
+    print(f"plant_04 : {test} cm")
+
+    print(f"{Y}-------------------------{RESET}")
+    print(f"{Y}----Re-Changing height---{RESET}")
+    print(f"{Y}-------------------------{RESET}")
+
+    plant_01.set_height = 25
+    test = plant_01.get_height
+    print(f"plant_01 : {test} cm")
+    plant_02.set_height = 72
+    test = plant_02.get_height
+    print(f"plant_02 : {test} cm")
+    plant_03.set_height = (42000000)
+    test = plant_03.get_height
+    print(f"plant_03 : {test} cm")
+    plant_04.set_height = (-100000)
+    test = plant_04.get_height
+    print(f"plant_04 : {test} cm")
