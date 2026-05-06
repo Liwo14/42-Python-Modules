@@ -1,12 +1,24 @@
 # ************************************************************************* #
 #                                                                           #
 #                                                      :::      ::::::::    #
+#  ft_garden_security.py                             :+:      :+:    :+:    #
+#                                                  +:+ +:+         +:+      #
+#  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
+#                                              +#+#+#+#+#+   +#+            #
+#  Created: 2026/05/06 07:29:33 by ccolnat         #+#    #+#               #
+#  Updated: 2026/05/06 07:54:20 by ccolnat         ###   ########.fr        #
+#                                                                           #
+# ************************************************************************* #
+
+# ************************************************************************* #
+#                                                                           #
+#                                                      :::      ::::::::    #
 #  ft_plant_factory.py                               :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/30 08:43:34 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/06 07:54:17 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/06 07:47:37 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -296,7 +308,7 @@ class Vegetable(Plant):
         print("|________________|_____________________|______________", end="")
         print("___|________________|")
 
-    def show_detailed(self):
+    def show_detailed(self) -> None:
         """
         **Method to show all the summary of the plant growth**
         """
@@ -346,7 +358,7 @@ class Vegetable(Plant):
                 print(f"{G}{self.name} is fully grown after", end="")
                 print(f" {self.plant_age} days !{RESET}")
 
-    def change_temp(self, temp: float):
+    def change_temp(self, temp: float) -> None:
         """
         **Method to change the temperature**
         """
@@ -370,7 +382,7 @@ class Vegetable(Plant):
         self.old_temp = self.temp
         self.temp = temp
 
-    def update_plant(self):
+    def update_plant(self) -> None:
         """
         **Method to update the growth speed of the plant**
         - Do nothing if the plant is fully grown or dead

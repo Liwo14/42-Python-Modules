@@ -6,7 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/30 08:43:34 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/06 07:28:47 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/06 07:54:12 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -245,6 +245,11 @@ class Vegetable(Plant):
             self.base_growth = self.base_growth * 1.2
 
     def age(self):
+        """
+        **Method to age the plant**
+
+        *Wont age the plant if it's dead or fully grown*
+        """
         if self.alive and self.size != self.mature_size:
             self.plant_age += 1
 
@@ -324,6 +329,12 @@ class Vegetable(Plant):
         print(f"Heat res up to: {self.heat_res}°C")
 
     def grow(self):
+        """
+        **Method to grow the plant**
+        - Prints a message when fully grown
+
+        *Wont grow the plant if it's fully grown already*
+        """
         if self.size == self.mature_size:
             return
         if self.size < self.mature_size:
