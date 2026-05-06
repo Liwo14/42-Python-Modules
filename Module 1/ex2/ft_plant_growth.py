@@ -6,7 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/30 08:43:34 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/06 07:06:16 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/06 07:28:47 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -483,4 +483,3 @@ if __name__ == "__main__":
     Vegetable.show_detailed(plant_3)
     Vegetable.show_detailed(plant_4)
     print("------------------------------------------------------------------")
-    
