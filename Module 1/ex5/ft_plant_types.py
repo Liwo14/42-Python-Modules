@@ -1,12 +1,12 @@
 # ************************************************************************* #
 #                                                                           #
 #                                                      :::      ::::::::    #
-#  ft_garden_security.py                             :+:      :+:    :+:    #
+#  ft_plant_types.py                                 :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
-#  Created: 2026/05/06 07:29:33 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/06 13:34:47 by ccolnat         ###   ########.fr        #
+#  Created: 2026/05/06 11:57:07 by ccolnat         #+#    #+#               #
+#  Updated: 2026/05/06 14:00:57 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -172,6 +172,36 @@ class Plant:
             if self._moisture < 0:
                 self._moisture = 0
 
+    def change_temp(self, temp: float) -> None:
+        """
+        **Method to change the temperature**
+        """
+        if 5500 > temp >= 60:
+            print(f"{R}Invalid temp: ({temp}°C), too high{RESET}", end=" ")
+            print("Damn, climate change goes hard today")
+            print(f"{Y}Temperature unchanged ({self._temp}°C){RESET}")
+            return
+        elif temp >= 5500:
+            print(f"{R}Invalid temp:{RESET}", end=" ")
+            print("Hotter that the sun, kinda too hot for plants", end=" ")
+            print("isn't it?")
+            print(f"{Y}Temperature unchanged ({self._temp}°C){RESET}")
+            return
+
+        elif -273.15 <= temp <= -60:
+            print(f"{R}Invalid temp: ({temp}°C), too low{RESET}", end=" ")
+            print("You may need to turn the heater On")
+            print(f"{Y}Temperature unchanged ({self._temp}°C){RESET}")
+        elif temp < -273.15:
+            print(f"{R}Invalid temp:{RESET}", end=" ")
+            print("Colder than the laws of physics, damn")
+            print(f"{Y}Temperature unchanged ({self._temp}°C){RESET}")
+            return
+
+        else:
+            self._old_temp = self._temp
+            self._temp = temp
+
     @property
     def get_temp(self) -> float:
         """
@@ -242,6 +272,78 @@ class Plant:
             self._size = height
 
 
+# class Tree(Plant):
+#     """
+#     **This is the blueprint for a tree**
+#     - Need a soil type:
+#         - Int 1 for low fertility soil
+#         - Int 2 for medium fertility soil
+#         - Int 3 for high fertility soil
+#         *(will default on medium if any other value is provided)*
+#     - Need the tree variety
+#         - Int 1 up to 18
+#         *(will default on 18 (Dragon Fruit) if any other value is provided)*
+#
+#
+#     """
+#     def __init__(
+#         self,
+#         soil_type: int,
+#         variety: int
+#     ) -> None:
+#
+#         super().__init__(soil_type)
+#         self._name: str
+#         """
+#         **The name of the vegetable**
+#         """
+#         self._max_size: float
+#         """
+#         **The size required to consider the vegetable mature**
+#         """
+#         self._base_growth: float
+#         """
+#         **Base growth speed**
+#
+#         - Expressed in cm per day.
+#
+#         - Base growth speed only change depending on the soil type.
+#         """
+#         self._heat_res: int
+#         """
+#         **Heat res**
+#
+#         - Expressed in degrees celucius.
+#
+#         - Plant can grow normally until temp reach that value.
+#
+#         - For any degree above the res value plant lose 10% growth speed.
+#
+#         - If temp reach 10 degrees above the res, plant dies.
+#         """
+#         self._cold_res: int
+#         """
+#         **Cold res**
+#
+#         - Expressed in degrees celcius.
+#
+#         - For any degree below 10, all plants lose 10% growth speed.
+#
+#         - If temp reach that value, the plant dies.
+#         """
+#
+#         (
+#             self._name,
+#             self._max_size,
+#             self._base_growth,
+#             self._cold_res,
+#             self._heat_res
+#         ) = vegetable_database(variety)
+#         print(f"{Y}{self._name} was created succesfully ! {RESET}")
+#
+#         Vegetable.update_plant(self)
+
+
 class Vegetable(Plant):
     """
     **This is the blueprint for a vegetable**
@@ -262,7 +364,7 @@ class Vegetable(Plant):
         variety: int
     ) -> None:
 
-        Plant.__init__(self, soil_type)
+        super().__init__(soil_type)
         self._name: str
         """
         **The name of the vegetable**
@@ -412,36 +514,6 @@ class Vegetable(Plant):
                 self._size = self._max_size
                 print(f"{G}{self._name} is fully grown after", end="")
                 print(f" {self._plant_age} days !{RESET}")
-
-    def change_temp(self, temp: float) -> None:
-        """
-        **Method to change the temperature**
-        """
-        if 5500 > temp >= 60:
-            print(f"{R}Invalid temp: ({temp}°C), too high{RESET}", end=" ")
-            print("Damn, climate change goes hard today")
-            print(f"{Y}Temperature unchanged ({self._temp}°C){RESET}")
-            return
-        elif temp >= 5500:
-            print(f"{R}Invalid temp:{RESET}", end=" ")
-            print("Hotter that the sun, kinda too hot for plants", end=" ")
-            print("isn't it?")
-            print(f"{Y}Temperature unchanged ({self._temp}°C){RESET}")
-            return
-
-        elif -273.15 <= temp <= -60:
-            print(f"{R}Invalid temp: ({temp}°C), too low{RESET}", end=" ")
-            print("You may need to turn the heater On")
-            print(f"{Y}Temperature unchanged ({self._temp}°C){RESET}")
-        elif temp < -273.15:
-            print(f"{R}Invalid temp:{RESET}", end=" ")
-            print("Colder than the laws of physics, damn")
-            print(f"{Y}Temperature unchanged ({self._temp}°C){RESET}")
-            return
-
-        else:
-            self._old_temp = self._temp
-            self._temp = temp
 
     def update_plant(self) -> None:
         """
