@@ -6,7 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/06 11:57:07 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/08 11:23:44 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/08 12:57:52 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -37,7 +37,13 @@ def soil_type_database(soil: int) -> str:
         return "medium fertility soil"
 
 
-def vegetable_database(variety: int) -> tuple[str, float, float, int, int]:
+def vegetable_database(variety: int) -> tuple[
+        str,
+        float,
+        float,
+        int,
+        int,
+        float]:
     """
     **Takes an int (1 up to 18)**
 
@@ -47,45 +53,46 @@ def vegetable_database(variety: int) -> tuple[str, float, float, int, int]:
     - Base growth speed (float)
     - Cold resistance (int)
     - Heat resistane (int)
+    - Max Nutritional Value
 
     *If input is outside range, will default on Dragon fruit.*
     """
     if variety == 1:
-        return "Carrot", 25, 0.33, -10, 22
+        return "Carrot", 25, 0.33, -10, 22, 100
     elif variety == 2:
-        return "Flax", 80, 0.84, -5, 30
+        return "Flax", 80, 0.84, -5, 30, 30
     elif variety == 3:
-        return "Onion", 40, 0.38, -1, 30
+        return "Onion", 40, 0.38, -1, 30, 100
     elif variety == 4:
-        return "Spelt", 110, 0.80, -5, 30
+        return "Spelt", 110, 0.80, -5, 30, 60
     elif variety == 5:
-        return "Turnip", 35, 0.64, -5, 17
+        return "Turnip", 35, 0.64, -5, 17, 100
     elif variety == 6:
-        return "Parsnip", 50, 0.45, -10,  22
+        return "Parsnip", 50, 0.45, -10, 22, 100
     elif variety == 7:
-        return "Rice", 110, 0.80, 8, 36
+        return "Rice", 110, 0.80, 8, 36, 60
     elif variety == 8:
-        return "Rye", 135, 0.90, -12, 17
+        return "Rye", 135, 0.90, -12, 17, 60
     elif variety == 9:
-        return "Soybean", 80, 0.80, -5, 30
+        return "Soybean", 80, 0.80, -5, 30, 150
     elif variety == 10:
-        return "Amaranth", 125, 1.20, 6, 32
+        return "Amaranth", 125, 1.20, 6, 32, 60
     elif variety == 11:
-        return "Bell Pepper", 75, 0.94, 8, 24
+        return "Bell Pepper", 75, 0.94, 8, 24, 50
     elif variety == 12:
-        return "Cassava", 225, 0.80, 4, 34
+        return "Cassava", 225, 0.80, 4, 34, 100
     elif variety == 13:
-        return "Peanut", 40, 0.30, 10, 32
+        return "Peanut", 40, 0.30, 10, 32, 160
     elif variety == 14:
-        return "Pineapple", 105, 0.20, 6, 38
+        return "Pineapple", 105, 0.20, 6, 38, 320
     elif variety == 15:
-        return "Sunflower", 225, 2.20, -5, 30
+        return "Sunflower", 225, 2.20, -5, 30, 60
     elif variety == 16:
-        return "Pumpkin", 45, 0.43, -5, 30
+        return "Pumpkin", 45, 0.43, -5, 30, 480
     elif variety == 17:
-        return "Cabbage", 50, 0.55, -5, 25
+        return "Cabbage", 50, 0.55, -5, 25, 300
     else:
-        return "Dragon Fruit", 200, 0.80, 0, 28
+        return "Dragon Fruit", 200, 0.80, 0, 28, 280
 
 
 def tree_database(variety: int) -> tuple[str, float, float, float, float]:
@@ -618,6 +625,18 @@ class Vegetable(Plant):
 
         - If temp reach that value, the plant dies.
         """
+        self._nutrition_value: float = 0
+        """
+        **Nutritional Value of the vegetable**
+
+        - Represent the current nutrional value of the vegetable
+        """
+        self._max_nutrition_value: float
+        """
+        **Nutritional Value of the vegetable**
+
+        - Represent the nutrional value of the vegetable when fully grown
+        """
 
         super().__init__(soil_type)
 
@@ -626,7 +645,8 @@ class Vegetable(Plant):
             self._max_size,
             self._base_growth,
             self._cold_res,
-            self._heat_res
+            self._heat_res,
+            self._max_nutrition_value
         ) = vegetable_database(variety)
         print(f"{Y}{self._name} was created succesfully ! {RESET}")
 
@@ -637,11 +657,16 @@ class Vegetable(Plant):
         **Method to update the growth speed of the vegetable**
         - Do the usual update by super() calling update_Plant method
         - Additionally apply buffs of malus for temperature
+        - Update the nutritional value in relation to growth percentage
 
+        *If plant is dead, nutritional value is halved*
         *Also kill the vegetable if temeratures are above or below resistances*
         """
 
         super().update_plant
+
+        self._nutrition_value = (self._max_nutrition_value *
+                                 (self._size / self._max_size))
 
         if self._temp > self._heat_res:
             if self._temp - self._heat_res >= 10:
@@ -664,6 +689,11 @@ class Vegetable(Plant):
             self._growth_speed = 0
         if 0 <= self._temp <= 9:
             self._growth_speed *= self._temp / 10
+
+        if not self._alive:
+            self._nutrition_value = (self._max_nutrition_value *
+                                     (self._size / self._max_size))
+            self._nutrition_value *= 0.5
 
 
 if __name__ == "__main__":
