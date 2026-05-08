@@ -6,7 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/06 11:57:07 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/08 10:45:31 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/08 11:23:44 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -125,6 +125,41 @@ def tree_database(variety: int) -> tuple[str, float, float, float, float]:
         return "Redwood", 11600, 0.25, 0.010, 0.15
     else:
         return "Walnut", 4000, 0.15, 0.004, 0.20
+
+
+def flower_database(variety: int) -> tuple[str, str, float, float, int]:
+    """
+    **Takes an int (1 up to 10)**
+
+    **Returns a turple for each flower variety in the form of :**
+    - Name (str)
+    - Color (str)
+    - Max height (float)
+    - Base height growth speed (float)
+    - Blooming temperature (int)
+
+    *If input is outside range, will default on while Edleweiss.*
+    """
+    if variety == 1:
+        return "Heather", "Purple", 60, 0.15, 14
+    if variety == 2:
+        return "Heather", "Pink", 60, 0.15, 14
+    elif variety == 3:
+        return "Lupine", "Blue", 120, 1.00, 16
+    elif variety == 4:
+        return "Lupine", "Purple", 120, 1.00, 16
+    elif variety == 5:
+        return "Lupine", "Pink", 120, 1.00, 16
+    elif variety == 6:
+        return "Foxglove", "Purple", 150, 1.20, 19
+    elif variety == 7:
+        return "Foxglove", "Pink", 150, 1.20, 19
+    elif variety == 8:
+        return "Foxglove", "White", 150, 1.20, 19
+    elif variety == 9:
+        return "Goldenrod", "Yellow", 100, 0.80, 22
+    else:
+        return "Edleweiss", "White", 20, 0.20, 10
 
 
 class Plant:
@@ -507,7 +542,8 @@ class Tree(Plant):
             self._shade_base
         ) = tree_database(variety)
         print(f"{Y}{self._name} was created succesfully ! {RESET}")
-        Plant.update_plant(self)
+
+        Tree.update_tree(self)
 
     def update_tree(self) -> None:
         """
@@ -594,7 +630,7 @@ class Vegetable(Plant):
         ) = vegetable_database(variety)
         print(f"{Y}{self._name} was created succesfully ! {RESET}")
 
-        Plant.update_plant(self)
+        Vegetable.update_vegetable(self)
 
     def update_vegetable(self) -> None:
         """
