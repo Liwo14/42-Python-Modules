@@ -6,7 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/06 07:29:33 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/06 13:34:47 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/08 10:49:54 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -310,6 +310,11 @@ class Vegetable(Plant):
             self._heat_res
         ) = vegetable_database(variety)
         print(f"{Y}{self._name} was created succesfully ! {RESET}")
+
+        if self._soil_type == "low fertility soil   ":
+            self._base_growth = self._base_growth * 0.8
+        elif self._soil_type == "high fertility soil  ":
+            self._base_growth = self._base_growth * 1.2
 
         Vegetable.update_plant(self)
 
