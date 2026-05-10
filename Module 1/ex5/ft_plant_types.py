@@ -6,7 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/06 11:57:07 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/10 10:01:25 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/10 10:36:02 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -577,7 +577,7 @@ class Tree(Plant):
 
     def show(self) -> None:
         """
-        Method to show special attributes of the plant class
+        **Method to show special attributes of the plant class**
         """
         super().show()
         print(f"Shade is: {self._shade:.1f} cm²")
