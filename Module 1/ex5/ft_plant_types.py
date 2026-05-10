@@ -6,7 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/06 11:57:07 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/08 12:57:52 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/10 10:01:25 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -43,7 +43,8 @@ def vegetable_database(variety: int) -> tuple[
         float,
         int,
         int,
-        float]:
+        float,
+        str]:
     """
     **Takes an int (1 up to 18)**
 
@@ -58,41 +59,41 @@ def vegetable_database(variety: int) -> tuple[
     *If input is outside range, will default on Dragon fruit.*
     """
     if variety == 1:
-        return "Carrot", 25, 0.33, -10, 22, 100
+        return "Carrot", 25, 0.33, -10, 22, 100, "October"
     elif variety == 2:
-        return "Flax", 80, 0.84, -5, 30, 30
+        return "Flax", 80, 0.84, -5, 30, 30, "August"
     elif variety == 3:
-        return "Onion", 40, 0.38, -1, 30, 100
+        return "Onion", 40, 0.38, -1, 30, 100, "September"
     elif variety == 4:
-        return "Spelt", 110, 0.80, -5, 30, 60
+        return "Spelt", 110, 0.80, -5, 30, 60, "August"
     elif variety == 5:
-        return "Turnip", 35, 0.64, -5, 17, 100
+        return "Turnip", 35, 0.64, -5, 17, 100, "November"
     elif variety == 6:
-        return "Parsnip", 50, 0.45, -10, 22, 100
+        return "Parsnip", 50, 0.45, -10, 22, 100, "December"
     elif variety == 7:
-        return "Rice", 110, 0.80, 8, 36, 60
+        return "Rice", 110, 0.80, 8, 36, 60, "September"
     elif variety == 8:
-        return "Rye", 135, 0.90, -12, 17, 60
+        return "Rye", 135, 0.90, -12, 17, 60, "July"
     elif variety == 9:
-        return "Soybean", 80, 0.80, -5, 30, 150
+        return "Soybean", 80, 0.80, -5, 30, 150, "October"
     elif variety == 10:
-        return "Amaranth", 125, 1.20, 6, 32, 60
+        return "Amaranth", 125, 1.20, 6, 32, 60, "September"
     elif variety == 11:
-        return "Bell Pepper", 75, 0.94, 8, 24, 50
+        return "Bell Pepper", 75, 0.94, 8, 24, 50, "September"
     elif variety == 12:
-        return "Cassava", 225, 0.80, 4, 34, 100
+        return "Cassava", 225, 0.80, 4, 34, 100, "November"
     elif variety == 13:
-        return "Peanut", 40, 0.30, 10, 32, 160
+        return "Peanut", 40, 0.30, 10, 32, 160, "October"
     elif variety == 14:
-        return "Pineapple", 105, 0.20, 6, 38, 320
+        return "Pineapple", 105, 0.20, 6, 38, 320, "June"
     elif variety == 15:
-        return "Sunflower", 225, 2.20, -5, 30, 60
+        return "Sunflower", 225, 2.20, -5, 30, 60, "September"
     elif variety == 16:
-        return "Pumpkin", 45, 0.43, -5, 30, 480
+        return "Pumpkin", 45, 0.43, -5, 30, 480, "October"
     elif variety == 17:
-        return "Cabbage", 50, 0.55, -5, 25, 300
+        return "Cabbage", 50, 0.55, -5, 25, 300, "November"
     else:
-        return "Dragon Fruit", 200, 0.80, 0, 28, 280
+        return "Dragon Fruit", 200, 0.80, 0, 28, 280, "September"
 
 
 def tree_database(variety: int) -> tuple[str, float, float, float, float]:
@@ -208,19 +209,19 @@ class Plant:
 
         *(can be low, medium or high fertility soil)*
         """
-        self._size: float
+        self._size: float = 1
         """
         **The size of the vegetable**
 
         *(Expressed in cm)*
         """
-        self._max_size: float
+        self._max_size: float = 1
         """
         **The size required to consider the vegetable mature**
 
         *(Expressed in cm)*
         """
-        self._base_growth: float
+        self._base_growth: float = 0.1
         """
         **Base growth speed**
 
@@ -228,7 +229,7 @@ class Plant:
 
         - Base growth speed only change depending on the soil type.
         """
-        self._growth_speed: float
+        self._growth_speed: float = 0.1
         """
         **Real growth speed**
         - Affected by temperature and moisture
@@ -381,7 +382,7 @@ class Plant:
         if self._alive and self._size != self._max_size:
             self._plant_age += 1
 
-    def show(self) -> None:
+    def show_progress(self) -> None:
         """
         **Method to show the daily change of the plant**
         """
@@ -422,7 +423,7 @@ class Plant:
         print("|________________|_____________________|______________", end="")
         print("___|________________|")
 
-    def show_detailed(self) -> None:
+    def show(self) -> None:
         """
         **Method to show all the summary of the plant growth**
         """
@@ -465,6 +466,7 @@ class Plant:
             return
         if self._size < self._max_size:
             self._size += self._growth_speed
+            Plant.age(self)
             if self._size > self._max_size:
                 self._size = self._max_size
                 print(f"{G}{self._name} is fully grown after", end="")
@@ -497,14 +499,10 @@ class Plant:
 class Tree(Plant):
     """
     **This is the blueprint for a tree**
-    - Need a soil type:
-        - Int 1 for low fertility soil
-        - Int 2 for medium fertility soil
-        - Int 3 for high fertility soil
-        *(will default on medium if any other value is provided)*
     - Need the tree variety
         - Int 1 up to 12
-        *(will default on 12 (Walnut) if any other value is provided)*
+
+    *Will default on 12 (Walnut) if any other value is provided*
     """
     def __init__(
         self,
@@ -512,9 +510,9 @@ class Tree(Plant):
         variety: int
     ) -> None:
 
-        self._diam: float
+        self._diam: float = 0.2
 
-        self._base_diam_growth: float
+        self._base_diam_growth: float = 0.1
         """
         **Base diamerter growth speed**
 
@@ -522,11 +520,11 @@ class Tree(Plant):
 
         - Base growth speed only change depending on the soil type.
         """
-        self._shade_base
+        self._shade_base: float = 0
         """
         **Basde shade of a tree**
         """
-        self._shade: float
+        self._shade: float = 0
         """
         **Value of the shade area of the tree**
         - expressed in cm²
@@ -536,11 +534,6 @@ class Tree(Plant):
 
         super().__init__(soil_type)
 
-        if self._soil_type == "low fertility soil   ":
-            self._base_diam_growth *= 0.8
-        elif self._soil_type == "high fertility soil  ":
-            self._base_diam_growth *= 1.2
-
         (
             self._name,
             self._max_size,
@@ -548,49 +541,54 @@ class Tree(Plant):
             self._base_diam_growth,
             self._shade_base
         ) = tree_database(variety)
+
+        if self._soil_type == "low fertility soil   ":
+            self._base_diam_growth *= 0.8
+        elif self._soil_type == "high fertility soil  ":
+            self._base_diam_growth *= 1.2
+
         print(f"{Y}{self._name} was created succesfully ! {RESET}")
 
-        Tree.update_tree(self)
+        Tree.update(self)
 
-    def update_tree(self) -> None:
+    def update(self) -> None:
         """
         **Method to update the growth speed of the tree**
         - Do the usual update by super() calling update_Plant method
-        - Additionally update trunk growth speed and shade area
+        - Additionally update trunk growth speed and calculate shade area
         """
 
+        super().update_plant()
+        Tree.produce_shade(self)
+
+    def produce_shade(self):
         self._shade = ((self._size * self._diam) +
                        ((self._diam * self._shade_base) * self._plant_age))
 
-        if 0 <= self._moisture < 25:
-            self._base_diam_growth *= 0.9
-        elif 25 <= self._moisture < 50:
-            self._base_diam_growth *= 1.1
-        elif 50 <= self._moisture < 75:
-            self._base_diam_growth *= 1.2
-        elif 75 <= self._moisture <= 100:
-            self._base_diam_growth *= 1.3
-        super().update_plant
-
-    def grow_tree(self) -> None:
+    def grow(self) -> None:
         """
         Grow the tree
         """
-        super().grow
+        super().grow()
         if self._size == self._max_size:
             return
         if self._size < self._max_size:
             self._diam += self._base_diam_growth
 
+    def show(self) -> None:
+        """
+        Method to show special attributes of the plant class
+        """
+        super().show()
+        print(f"Shade is: {self._shade:.1f} cm²")
+        print(f"Trunk diameter is: {self._diam:.1f} cm")
+        print(f"Trunk growth speed is: {self._base_diam_growth:.3f}", end="")
+        print(" cm per day")
+
 
 class Vegetable(Plant):
     """
     **This is the blueprint for a vegetable**
-    - Need a soil type:
-        - Int 1 for low fertility soil
-        - Int 2 for medium fertility soil
-        - Int 3 for high fertility soil
-        *(will default on medium if any other value is provided)*
     - Need the vegetable variety
         - Int 1 up to 18
         *(will default on 18 (Dragon Fruit) if any other value is provided)*
@@ -603,7 +601,7 @@ class Vegetable(Plant):
         variety: int
     ) -> None:
 
-        self._heat_res: int
+        self._heat_res: int = 10
         """
         **Heat res**
 
@@ -615,7 +613,7 @@ class Vegetable(Plant):
 
         - If temp reach 10 degrees above the res, plant dies.
         """
-        self._cold_res: int
+        self._cold_res: int = 30
         """
         **Cold res**
 
@@ -625,19 +623,22 @@ class Vegetable(Plant):
 
         - If temp reach that value, the plant dies.
         """
-        self._nutrition_value: float = 0
+        self._nutri_val: float = 0
         """
         **Nutritional Value of the vegetable**
 
         - Represent the current nutrional value of the vegetable
         """
-        self._max_nutrition_value: float
+        self._max_nutri_val: float = 0
         """
         **Nutritional Value of the vegetable**
 
         - Represent the nutrional value of the vegetable when fully grown
         """
-
+        self._harvest_season: str
+        """
+        **Month which define the harvest season for the vegetable**
+        """
         super().__init__(soil_type)
 
         (
@@ -646,13 +647,14 @@ class Vegetable(Plant):
             self._base_growth,
             self._cold_res,
             self._heat_res,
-            self._max_nutrition_value
+            self._max_nutri_val,
+            self._harvest_season
         ) = vegetable_database(variety)
         print(f"{Y}{self._name} was created succesfully ! {RESET}")
 
-        Vegetable.update_vegetable(self)
+        Vegetable.update(self)
 
-    def update_vegetable(self) -> None:
+    def update(self) -> None:
         """
         **Method to update the growth speed of the vegetable**
         - Do the usual update by super() calling update_Plant method
@@ -663,10 +665,10 @@ class Vegetable(Plant):
         *Also kill the vegetable if temeratures are above or below resistances*
         """
 
-        super().update_plant
+        super().update_plant()
 
-        self._nutrition_value = (self._max_nutrition_value *
-                                 (self._size / self._max_size))
+        self._nutri_val = (self._max_nutri_val *
+                           (self._size / self._max_size))
 
         if self._temp > self._heat_res:
             if self._temp - self._heat_res >= 10:
@@ -691,10 +693,112 @@ class Vegetable(Plant):
             self._growth_speed *= self._temp / 10
 
         if not self._alive:
-            self._nutrition_value = (self._max_nutrition_value *
-                                     (self._size / self._max_size))
-            self._nutrition_value *= 0.5
+            self._nutri_val = (self._max_nutri_val *
+                               (self._size / self._max_size))
+            self._nutri_val *= 0.5
+
+    def show(self) -> None:
+        """
+        Method to show special attributes of the plant class
+        """
+        super().show()
+        print(f"Nutrional value is curently worth: {self._nutri_val:.1f} kcal")
+        print(f"{(self._nutri_val / self._max_nutri_val) * 100:.1f}", end="")
+        print("% of the maximum nutritial value (", end="")
+        print(f"{self._max_nutri_val:.0f} kcal)")
+        print(f"The harvest season is: {self._harvest_season}")
+
+
+class Flower(Plant):
+    """
+    **This is the blueprint for a flower**
+    - Need the flower variety
+        - Int 1 up to 10
+
+    *Will default on 10 (Edleweiss) if any other value is provided*
+    """
+    def __init__(
+        self,
+        soil_type: int,
+        variety: int
+    ) -> None:
+
+        self.blooming: bool = False
+
+        super().__init__(soil_type)
+
+        (
+            self._name,
+            self._color,
+            self._max_size,
+            self._base_growth,
+            self._bloom_temp
+        ) = flower_database(variety)
+
+        print(f"{Y}{self._name} was created succesfully ! {RESET}")
+
+        Flower.update(self)
+
+    def update(self) -> None:
+        """
+        **Method to update the state and growth of the flower**
+        - Do the usual update by super() calling update_Plant method
+        - Additionally update flower growth speed and check if it can bloom
+        """
+
+        super().update_plant()
+
+        if self._alive and not self.blooming and self._size == self._max_size:
+            if (self._temp > self._bloom_temp and
+                    self._old_temp > self._bloom_temp):
+                self.blooming = True
+        if self.blooming and self._temp < (self._bloom_temp - 10):
+            self._blooming = False
+        if self._temp < 0:
+            self._alive = False
+            self.blooming = False
+
+    def force_blooming(self) -> None:
+        self.blooming = True
+
+    def show(self) -> None:
+        """
+        Method to show special attributes of the plant class
+        """
+        super().show()
+        print(f"Flower color is: {self._color}")
+        if self.blooming:
+            print("The flower is curently blooming !")
+        else:
+            print("The flower is not blooming yet")
 
 
 if __name__ == "__main__":
-    pass
+    import random
+
+    plant_01 = Tree(random.randint(1, 3), random.randint(1, 12))
+    plant_02 = Vegetable(random.randint(1, 3), random.randint(1, 18))
+    plant_03 = Flower(random.randint(1, 3), random.randint(1, 10))
+
+    Tree.show(plant_01)
+    Vegetable.show(plant_02)
+    Flower.show(plant_03)
+    print("-------------------------------------------------------")
+    i: int = 3600
+    print(f"{Y}")
+    print("*****************************************************")
+    print(f"Making garden grow for {i} days")
+    print("*****************************************************")
+    print(f"{RESET}")
+    while i != 0:
+        i -= 1
+        Tree.grow(plant_01)
+        Plant.grow(plant_02)
+        Plant.grow(plant_03)
+        Tree.update(plant_01)
+        Vegetable.update(plant_02)
+        Flower.update(plant_03)
+
+    Tree.show(plant_01)
+    Vegetable.show(plant_02)
+    Flower.show(plant_03)
