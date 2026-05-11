@@ -6,7 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/10 11:25:27 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/11 09:13:03 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/11 10:52:24 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -842,7 +842,7 @@ class Seed(Flower):
 
 def ft_show_stats(plant: Plant) -> None:
     """
-    Global function which show methods stats for any Plant
+    **Global function which show methods stats for any Plant**
     """
     print(f"{P}ft_show_stats{RESET}")
     plant._stats.print_stats()
@@ -851,7 +851,7 @@ def ft_show_stats(plant: Plant) -> None:
 if __name__ == "__main__":
     import random
 
-    nb_simulated_days: int = 90
+    nb_simulated_days: int = 900
 
     temp: int
     is_raining: int
