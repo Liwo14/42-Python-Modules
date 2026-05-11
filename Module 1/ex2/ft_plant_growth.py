@@ -6,7 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/30 08:43:34 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/06 11:50:26 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/11 09:38:48 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -14,6 +14,7 @@ R = '\033[31m'
 Y = '\033[33m'
 G = '\033[32m'
 B = '\033[34m'
+P = '\033[35m'
 RESET = '\033[0m'
 
 
@@ -422,23 +423,23 @@ if __name__ == "__main__":
     temp: int
     is_raining: int
     temp = random.randint(15, 22)
-    print(f"{Y}--------------------{RESET}")
-    print(f"{Y}Starting simulation{RESET}")
-    print(f"{Y}--------------------{RESET}")
+    print(f"{P}--------------------{RESET}")
+    print(f"{P}Starting simulation{RESET}")
+    print(f"{P}--------------------{RESET}")
 
-    print(f"{Y}Starting temp: {temp}°C{RESET}")
-    print(f"{Y}--------------------{RESET}")
+    print(f"{P}Starting temp: {temp}°C{RESET}")
+    print(f"{P}--------------------{RESET}")
     plant_1 = Vegetable(random.randint(1, 3), random.randint(1, 18))
     plant_2 = Vegetable(random.randint(1, 3), random.randint(1, 18))
     plant_3 = Vegetable(random.randint(1, 3), random.randint(1, 18))
     plant_4 = Vegetable(random.randint(1, 3), random.randint(1, 18))
-    print(f"{Y}--------------------{RESET}")
+    print(f"{P}--------------------{RESET}")
 
     Vegetable.update_plant(plant_1)
     Vegetable.update_plant(plant_2)
     Vegetable.update_plant(plant_3)
     Vegetable.update_plant(plant_4)
-    print(f"{Y}--------------------{RESET}")
+    print(f"{P}--------------------{RESET}")
 
     Vegetable.show_detailed(plant_1)
     Vegetable.show_detailed(plant_2)
@@ -446,7 +447,7 @@ if __name__ == "__main__":
     Vegetable.show_detailed(plant_4)
 
     nb_of_days: int = 0
-    while (nb_of_days < 90):
+    while (nb_of_days < 7):
         temp += random.randint(-2, 2)
         is_raining = random.randint(0, 4)
 
@@ -456,7 +457,7 @@ if __name__ == "__main__":
         Vegetable.change_temp(plant_4, temp)
 
         if is_raining == 0:
-            print(f"{B}It's raining today !{RESET}")
+            print(f"{P}It's raining today !{RESET}")
             Vegetable.raining(plant_1, True)
             Vegetable.raining(plant_2, True)
             Vegetable.raining(plant_3, True)
@@ -488,9 +489,15 @@ if __name__ == "__main__":
         Vegetable.update_plant(plant_4)
         nb_of_days += 1
 
-    print("--------------------------Summary-----------------------------")
+    print(f"{P}")
+    print("**************************************************************")
+    print("**************************Summary*****************************")
+    print("**************************************************************")
+    print(f"{RESET}")
     Vegetable.show_detailed(plant_1)
     Vegetable.show_detailed(plant_2)
     Vegetable.show_detailed(plant_3)
     Vegetable.show_detailed(plant_4)
-    print("------------------------------------------------------------------")
+    print(f"{P}")
+    print("**************************************************************")
+    print(f"{RESET}")

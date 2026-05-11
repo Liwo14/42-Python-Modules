@@ -6,7 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/23 10:57:26 by ccolnat         #+#    #+#               #
-#  Updated: 2026/04/24 12:46:38 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/11 09:27:20 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -69,3 +69,6 @@ def ft_garden_intro():
 
 if __name__ == "__main__":
     ft_garden_intro()
+
+
+# !/usr/bin/env python3
