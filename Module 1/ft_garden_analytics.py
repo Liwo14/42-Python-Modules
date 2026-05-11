@@ -6,7 +6,7 @@
 #  By: ccolnat <ccolnat@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/10 11:25:27 by ccolnat         #+#    #+#               #
-#  Updated: 2026/05/10 13:42:46 by ccolnat         ###   ########.fr        #
+#  Updated: 2026/05/11 09:13:03 by ccolnat         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -186,11 +186,30 @@ class Plant:
 
     *(will default on medium if any other value is provided)*
     """
+    class _Analytics:
+        def __init__(self, plant: 'Plant') -> None:
+            self._show_calls: int = 0
+            self._grow_calls: int = 0
+            self._age_calls: int = 0
+            self._update_calls: int = 0
+            self._plant_data: 'Plant' = plant
+
+        def print_stats(self) -> None:
+            print(f"{Y}Number of calls for: {self._plant_data._name}")
+            print(f"Show: {self._show_calls}", end="")
+            print(f" | Grow: {self._grow_calls}", end="")
+            print(f" | Age: {self._age_calls}", end="")
+            print(f" | Updates: {self._update_calls}{RESET}")
+
     def __init__(
         self,
         soil_type: int
     ) -> None:
 
+        self._stats = self._Analytics(self)
+        """
+        **The stats about the number of plant's methods calls**
+        """
         self._name: str = "Unkown"
         """
         **The name of the vegetable**
@@ -385,8 +404,10 @@ class Plant:
 
         *Wont age the plant if it's dead or fully grown*
         """
-        if self._alive and self._size != self._max_size:
+        self._stats._age_calls += 1
+        if self._alive:
             self._plant_age += 1
+            Plant.grow(self)
 
     @staticmethod
     def is_year(nb: int) -> bool:
@@ -405,6 +426,7 @@ class Plant:
         """
         **Method to show all the summary of the plant growth**
         """
+        self._stats._show_calls += 1
         print("--------------------------------------------------------------")
         if not self._alive:
             print(f"{self._name} {R}died{RESET} on day ", end="")
@@ -440,13 +462,13 @@ class Plant:
         **Method to grow the plant**
         - Prints a message when fully grown
 
-        *Wont grow the plant if it's fully grown already*
+        *Wont grow the plant if it's fully grown already or dead*
         """
-        if self._size == self._max_size:
+        if self._size == self._max_size or not self._alive:
             return
+        self._stats._grow_calls += 1
         if self._size < self._max_size:
             self._size += self._growth_speed
-            Plant.age(self)
             if self._size > self._max_size:
                 self._size = self._max_size
                 print(f"{G}{self._name} is fully grown after", end="")
@@ -458,6 +480,7 @@ class Plant:
         - Do nothing if the plant is fully grown or dead
         - Apply buffs of malus for humidity level
         """
+        self._stats._update_calls += 1
         if self._max_size == 0:
             print(f"{Y}Update error for: {self._name}", end="")
             print(f" -> _max_size ={R} {self._size}{RESET}")
@@ -492,6 +515,16 @@ class Tree(Plant):
 
     *Will default on 12 (Walnut) if any other value is provided*
     """
+
+    class _Analytics_tree(Plant._Analytics):
+        def __init__(self, plant: 'Tree') -> None:
+            super().__init__(plant)
+            self._shade_calls: int = 0
+
+        def print_stats(self) -> None:
+            super().print_stats()
+            print(f"{Y}Shade: {self._shade_calls}{RESET}")
+
     def __init__(
         self,
         soil_type: int,
@@ -521,6 +554,7 @@ class Tree(Plant):
         """
 
         super().__init__(soil_type)
+        self._stats = self._Analytics_tree(self)
 
         (
             self._name,
@@ -550,6 +584,7 @@ class Tree(Plant):
         Tree.produce_shade(self)
 
     def produce_shade(self):
+        self._stats._shade_calls += 1
         self._shade = ((self._size * self._diam) +
                        ((self._diam * self._shade_base) * self._plant_age))
 
@@ -655,6 +690,8 @@ class Vegetable(Plant):
 
         super().update_plant()
 
+        if not self._alive:
+            return
         self._nutri_val = (self._max_nutri_val *
                            (self._size / self._max_size))
 
@@ -663,7 +700,7 @@ class Vegetable(Plant):
                 self._alive = False
                 self._growth_speed = 0
                 print(f"{R}{self._name} has grown {self._size:.2f} cm", end="")
-                print(f"and died of the heat after {self._plant_age} days")
+                print(f" and died of the heat after {self._plant_age} days")
                 print(f"{RESET}")
                 return
             else:
@@ -673,17 +710,16 @@ class Vegetable(Plant):
             self._alive = False
             self._growth_speed = 0
             print(f"{R}{self._name} has grown {self._size:.2f} cm", end="")
-            print(f"and died of the cold after {self._plant_age} days{RESET}")
+            print(f" and died of the cold after {self._plant_age} days")
+            print(f"Leftover nutritional value is Halved{RESET}")
+            self._nutri_val = (self._max_nutri_val *
+                               (self._size / self._max_size))
+            self._nutri_val *= 0.5
             return
         if self._temp < 0:
             self._growth_speed = 0
         if 0 <= self._temp <= 9:
             self._growth_speed *= self._temp / 10
-
-        if not self._alive:
-            self._nutri_val = (self._max_nutri_val *
-                               (self._size / self._max_size))
-            self._nutri_val *= 0.5
 
     def show(self) -> None:
         """
@@ -712,6 +748,7 @@ class Flower(Plant):
     ) -> None:
 
         self.blooming: bool = False
+        self.nb_blooming_days: int = 0
 
         super().__init__(soil_type)
 
@@ -736,6 +773,9 @@ class Flower(Plant):
 
         super().update_plant()
 
+        if self.blooming:
+            self.nb_blooming_days += 1
+
         if self._alive and not self.blooming and self._size == self._max_size:
             if (self._temp > self._bloom_temp and
                     self._old_temp > self._bloom_temp):
@@ -754,69 +794,164 @@ class Flower(Plant):
         Method to show special attributes of the plant class
         """
         super().show()
-        print(f"Flower color is: {self._color}")
+
         if self.blooming:
-            print("The flower is curently blooming !")
+            print(f"The {self._name} is curently blooming {self._color}!")
         else:
-            print("The flower is not blooming yet")
+            if not self._alive and self.nb_blooming_days != 0:
+                print("The flower will never bloom again...")
+            elif not self._alive and self.nb_blooming_days == 0:
+                print("The flower never bloomed, how sad :c")
+            else:
+                print("The flower is not blooming")
+
+        if self.nb_blooming_days != 0:
+            print(f"{self._name} bloomed for a total of:", end="")
+            print(f" {self.nb_blooming_days} days")
+
+
+class Seed(Flower):
+    """
+    **This is the blueprint for a seed**
+    """
+    def __init__(
+        self,
+        soil_type: int,
+        variety: int
+    ) -> None:
+
+        super().__init__(soil_type, variety)
+
+        self._nb_seeds: int = 0
+
+    def update(self) -> None:
+        """
+        Update method for Seed, overriding Flower's update.
+        """
+        super().update()
+        if self._alive and self.blooming:
+            self._nb_seeds += 10
+
+    def show(self) -> None:
+        """
+        Update method for Seed, overriding Flower's update.
+        """
+        super().show()
+        print(f"The flower holds: {self._nb_seeds} seeds !")
+
+
+def ft_show_stats(plant: Plant) -> None:
+    """
+    Global function which show methods stats for any Plant
+    """
+    print(f"{P}ft_show_stats{RESET}")
+    plant._stats.print_stats()
 
 
 if __name__ == "__main__":
     import random
+
+    nb_simulated_days: int = 90
+
+    temp: int
+    is_raining: int
+    temp = random.randint(15, 22)
+
     nb_1: int = 365
     nb_2: int = 366
     nb_3: int = random.randint(-720, -1)
     nb_4: int = random.randint(0, 720)
 
-    print(f"Is {B}{nb_1}{RESET} days higher than a year ? ->", end="")
+    print(f"{P}Is {Y}{nb_1}{P} days higher than a year ? ->{RESET}", end="")
     print(f"{Plant.is_year(nb_1)}{RESET}")
 
-    print(f"Is {B}{nb_2}{RESET} days higher than a year ? ->", end="")
+    print(f"{P}Is {Y}{nb_2}{P} days higher than a year ? ->{RESET}", end="")
     print(f"{Plant.is_year(nb_2)}{RESET}")
 
-    print(f"Is {B}{nb_3}{RESET} days higher than a year ? ->", end="")
+    print(f"{P}Is {Y}{nb_3}{P} days higher than a year ? ->{RESET}", end="")
     print(f"{Plant.is_year(nb_3)}{RESET}")
 
-    print(f"Is {B}{nb_4}{RESET} days higher than a year ? ->", end="")
+    print(f"{P}Is {Y}{nb_4}{P} days higher than a year ? ->{RESET}", end="")
     print(f"{Plant.is_year(nb_4)}{RESET}")
 
     print(f"{P}")
     print(f"Initiating: Plant_01{RESET}")
     plant_01 = Tree(random.randint(1, 3), random.randint(1, 12))
     plant_01.show()
+    plant_01._stats.print_stats()
 
     print(f"{P}")
     print(f"Initiating: Plant_02{RESET}")
     plant_02 = Vegetable(random.randint(1, 3), random.randint(1, 18))
     plant_02.show()
+    plant_02._stats.print_stats()
 
     print(f"{P}")
     print(f"Initiating: Plant_03{RESET}")
-    plant_03 = Flower(random.randint(1, 3), random.randint(1, 10))
+    plant_03 = Seed(random.randint(1, 3), random.randint(1, 10))
     plant_03.show()
+    plant_03._stats.print_stats()
 
     print(f"{P}")
     print(f"Initiating: Plant_04{RESET}")
     plant_04 = Plant.unknown()
     plant_04.update_plant()
     plant_04.show()
+    plant_04._stats.print_stats()
 
-#    print("-------------------------------------------------------")
-#    i: int = 3
-#    print(f"{Y}")
-#    print("*****************************************************")
-#    print(f"Making garden grow for {i} days")
-#    print("*****************************************************")
-#    print(f"{RESET}")
-#    while i != 0:
-#        i -= 1
-#        Tree.grow(plant_01)
-#        Plant.grow(plant_02)
-#        Plant.grow(plant_03)
-#        Tree.update(plant_01)
-#        Vegetable.update(plant_02)
-#        Flower.update(plant_03)
+    print("-------------------------------------------------------")
+    print(f"{P}")
+    print("*****************************************************")
+    print(f"Making garden grow for {nb_simulated_days} days")
+    print("*****************************************************")
+    print(f"{RESET}")
+    j: int = 0
+    while j != nb_simulated_days:
+        j += 1
 
-#    Tree.show(plant_01)
-#    Vegetable.show(plant_02)
-#    Flower.show(plant_03)
+        temp += random.randint(-2, 2)
+        if temp > 38.5:
+            temp += random.randint(-2, 1)
+        if temp < 0.5:
+            temp += random.randint(-1, 2)
+        is_raining = random.randint(0, 4)
+
+        plant_01.change_temp(temp)
+        plant_02.change_temp(temp)
+        plant_03.change_temp(temp)
+
+        if is_raining == 0:
+            print(f"{P}It's raining today !{RESET}")
+            plant_01.raining(True)
+            plant_02.raining(True)
+            plant_03.raining(True)
+        else:
+            plant_01.raining(False)
+            plant_02.raining(False)
+            plant_03.raining(False)
+
+        plant_01.age()
+        plant_02.age()
+        plant_03.age()
+
+        plant_01.update()
+        plant_02.update()
+        plant_03.update()
+
+    print(f"{P}")
+    print("*****************************************************")
+    print(f"Stats after {nb_simulated_days} days")
+    print("*****************************************************")
+    print(f"{RESET}")
+
+    plant_01.show()
+    ft_show_stats(plant_01)
+
+    plant_02.show()
+    plant_02._stats.print_stats()
+
+    plant_03.show()
+    plant_03._stats.print_stats()
+
+    plant_04.show()
+    plant_04._stats.print_stats()
